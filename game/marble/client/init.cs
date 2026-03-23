@@ -85,6 +85,7 @@ function initClient()
    // Load up the Game GUIs
    exec("./ui/defaultGameProfiles.cs");
    exec("./ui/loadingGui.gui");
+   exec("./scripts/loadingGui.cs");
    exec("./ui/missionLoadingGui.gui");
    exec("./ui/presentsGui.gui");
    // Get something on the screen as fast as possible 
@@ -721,14 +722,21 @@ function establishConnection(%address, %mp, %isLocal, %invited)
 
 function populatePreviewMission()
 {
+   %status = "populating preview mission";
+   loaderCallback(%status, "", 0);
+   
    %start = getRealTime();
    
    $instantGroup = MegaMissionGroup;
+   
+   %totalCount = SinglePlayMissionGroup.getCount() + CustomSinglePlayMissionGroup.getCount() + MultiPlayMissionGroup.getCount() + SpecialMissionGroup.getCount();
 
    for (%i = 0; %i < SinglePlayMissionGroup.getCount(); %i++)
    {
       %info = SinglePlayMissionGroup.getObject(%i);      
       %mission = fileName(%info.file);
+      
+      loaderCallback(%status, %mission, %i * 100 / %totalCount);
 
       // First the InteriorInstance's
       %info.missionGroup = loadObjectsFromMission(%mission);
@@ -762,6 +770,8 @@ function populatePreviewMission()
    {
       %info = CustomSinglePlayMissionGroup.getObject(%i);      
       %mission = fileName(%info.file);
+      
+      loaderCallback(%status, %mission, (%i + SinglePlayMissionGroup.getCount()) * 100 / %totalCount);
 
       // First the InteriorInstance's
       %info.missionGroup = loadObjectsFromMission(%mission);
@@ -795,6 +805,8 @@ function populatePreviewMission()
    {
       %info = MultiPlayMissionGroup.getObject(%i);      
       %mission = fileName(%info.file);
+      
+      loaderCallback(%status, %mission, (%i + SinglePlayMissionGroup.getCount() + CustomSinglePlayMissionGroup) * 100 / %totalCount);
 
       // First the InteriorInstance's
       %info.missionGroup = loadObjectsFromMission(%mission);
@@ -829,6 +841,8 @@ function populatePreviewMission()
       %info = SpecialMissionGroup.getObject(%i);      
       %mission = fileName(%info.file);
       
+      loaderCallback(%status, %mission, (%i + SinglePlayMissionGroup.getCount() + CustomSinglePlayMissionGroup.getCount() + MultiPlayMissionGroup.getCount()) * 100 / %totalCount);
+      
       // First the InteriorInstance's
       %info.missionGroup = loadObjectsFromMission(%mission);
       
@@ -847,6 +861,8 @@ function populatePreviewMission()
       // Then the other glass
       loadObjectsFromMission(%mission, "TSStatic");
    }
+   
+   loaderProgressCallback(100);
 
    %diff = getRealTime() - %start;
    error("Took " @ %diff / 1000 @ " seconds to populate the preview mission");
