@@ -1,0 +1,46 @@
+# Super Monkey Ball Features & Mechanics Research
+
+## Core Mechanics
+- **World Tilting (All Games):** The primary control scheme. The player tilts the stage, and gravity moves the ball.
+- **Fallout (All Games):** Falling off the stage results in losing a life or a time penalty.
+- **Time Limit (All Games):** Stages must be completed within a strict time limit.
+- **Goals (All Games):** Break the tape to complete a level. Multiple goals exist: Green (Normal), Red (Warp), Green/Blue (Special).
+- **Bananas (All Games):** Collectibles scattered across stages. 100 Bananas = 1 Extra Life.
+- **Jump (Banana Blitz, Banana Mania):** Allows the ball to jump over gaps and obstacles.
+- **Dash / Spin Dash (Banana Rumble):** A quick burst of speed.
+- **Balance Board (Step & Roll):** Physical shifting of weight to control the stage.
+
+## Stage Elements & Obstacles
+- **Bumpers:** Bounce the player away upon contact.
+- **Conveyor Belts:** Move the player automatically in a specific direction.
+- **Seesaws:** Platforms that tilt based on the player's weight/position.
+- **Switches & Buttons:** Trigger events like moving platforms, opening doors, or changing the stage layout.
+- **Moving Platforms:** Platforms that move back and forth, up and down, or along tracks.
+- **Gears / Rotating Cylinders:** Rotating elements that require precise timing to navigate.
+- **Warp Gates:** Teleport the player from one part of the stage to another.
+- **Ice / Frictionless Surfaces:** Reduced control over the ball.
+- **Sand / High Friction Surfaces:** Slower movement.
+- **Springs / Launchers:** Propel the player into the air.
+
+## Game Modes
+- **Main Game (Story / Challenge Mode):** Sequential levels with increasing difficulty (Beginner, Advanced, Expert, Master).
+- **Party Games / Minigames:**
+  - **Monkey Target:** Roll down a ramp, deploy wings, glide, and land on targets for points. Collect bananas and use items in the air.
+  - **Monkey Billiards:** Pool game using the monkey balls.
+  - **Monkey Bowling:** Bowling game with various lane shapes and obstacles.
+  - **Monkey Golf:** Mini-golf with the monkey balls.
+  - **Monkey Fight:** Punch other monkeys off an arena using boxing gloves.
+  - **Monkey Race:** Kart racing-style game with power-ups.
+  - **Monkey Boat:** Kayak racing.
+  - **Monkey Shot:** Rail shooter.
+  - **Monkey Dogfight:** Aerial combat.
+  - **Monkey Soccer:** Soccer game.
+  - **Monkey Baseball:** Baseball game.
+  - **Monkey Tennis:** Tennis game.
+  - **Monkey Snowboard:** Snowboarding down a mountain.
+
+## Re-implementation Strategy for OpenMBU
+1. **Control Scheme Hybrid:** Offer both MBU's direct-torque rolling and SMB's world-tilting. We can achieve this by hooking into the physics engine and adjusting global gravity based on input, or rotating the entire interior object (harder but more authentic).
+2. **Collectibles:** Implement a robust item system for Bananas, extending MBU's Gem system.
+3. **Obstacles:** Map MBU's existing hazards (Tornadoes, Bumpers, Fans, Mines) to SMB equivalents and create new ones (Seesaws, Conveyors) using Torque's pathing and trigger systems.
+4. **Minigame Framework:** Create separate game modes (`$Game::Mode = "Target";`) that load specific GUI overlays and alter ball physics (e.g., adding air control for Monkey Target).

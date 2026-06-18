@@ -547,6 +547,25 @@ function MarbleData::onAdd(%this, %obj)
 
 function MarbleData::onTrigger(%this, %obj, %triggerNum, %val)
 {
+   // triggerNum 2 is the jump trigger
+   if (%triggerNum == 2 && %val)
+   {
+      // Check if we have contacts to allow jumping (simulating ground check)
+      // We apply an impulse upwards to simulate the Jump mechanic from Banana Blitz
+      %contacts = %obj.getContactCount();
+      if (%contacts > 0)
+      {
+         // Apply an upward jump impulse. The force might need tweaking.
+         // MBU marble mass is 1. We'll try an impulse of 5.
+         %obj.applyImpulse("0 0 0", "0 0 5");
+
+         // Play jump sound
+         if (isObject(JumpSfx))
+         {
+            serverPlay3D(JumpSfx, %obj.getTransform());
+         }
+      }
+   }
 }
 
 

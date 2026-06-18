@@ -148,6 +148,137 @@ new GuiControl(PlayGui) {
 		   };
 	   };
    };
+
+	new GuiControl(BananaBox) {
+	   profile = "GuiDefaultProfile";
+      horizSizing = "relativeHeight";
+      vertSizing = "relativeHeight";
+	   position = "0 64";
+	   extent = "300 200";
+	   normextent = "300 200";
+	   minExtent = "8 8";
+	   visible = "1";
+
+	   new GuiControl() {
+	      profile = "GuiDefaultProfile";
+	      position = "26 0";
+	      extent = "256 64";
+	      minExtent = "8 8";
+	      horizSizing = "relative";
+	      vertSizing = "relative";
+	      visible = "1";
+	         helpTag = "0";
+
+		   new GuiBitmapCtrl(SUMO_NegSign) {
+		      profile = "GuiDefaultProfile";
+		      horizSizing = "relative";
+		      vertSizing = "relative";
+		      position = "0 4";
+		      extent = "43 55";
+		      minExtent = "8 8";
+		      visible = "1";
+		      bitmap = "./game/numbers/dash.png";
+		      wrap = "0";
+		         helpTag = "0";
+		   };
+		   new GuiBitmapCtrl(BananasFoundHundred) {
+		      profile = "GuiDefaultProfile";
+		      horizSizing = "relative";
+		      vertSizing = "relative";
+		      position = "20 4";
+		      extent = "43 55";
+		      minExtent = "8 8";
+		      visible = "1";
+		      bitmap = "./game/numbers/0.png";
+		      wrap = "0";
+		         helpTag = "0";
+		   };
+		   new GuiBitmapCtrl(BananasFoundTen) {
+		      profile = "GuiDefaultProfile";
+		      horizSizing = "relative";
+		      vertSizing = "relative";
+		      position = "38 4";
+		      extent = "43 55";
+		      minExtent = "8 8";
+		      visible = "1";
+		      bitmap = "./game/numbers/0.png";
+		      wrap = "0";
+		         helpTag = "0";
+		   };
+		   new GuiBitmapCtrl(BananasFoundOne) {
+		      profile = "GuiDefaultProfile";
+		      horizSizing = "relative";
+		      vertSizing = "relative";
+		      position = "56 4";
+		      extent = "43 55";
+		      minExtent = "8 8";
+		      visible = "1";
+		      bitmap = "./game/numbers/0.png";
+		      wrap = "0";
+		         helpTag = "0";
+		   };
+		   new GuiBitmapCtrl(BananasSlash) {
+		      profile = "GuiDefaultProfile";
+		      horizSizing = "relative";
+		      vertSizing = "relative";
+		      position = "73 4";
+		      extent = "43 55";
+		      minExtent = "8 8";
+		      visible = "1";
+		      bitmap = "./game/numbers/slash.png";
+		      wrap = "0";
+		         helpTag = "0";
+		   };
+		   new GuiBitmapCtrl(BananasTotalHundred) {
+		      profile = "GuiDefaultProfile";
+		      horizSizing = "relative";
+		      vertSizing = "relative";
+		      position = "89 4";
+		      extent = "43 55";
+		      minExtent = "8 8";
+		      visible = "1";
+		      bitmap = "./game/numbers/0.png";
+		      wrap = "0";
+		         helpTag = "0";
+		   };
+		   new GuiBitmapCtrl(BananasTotalTen) {
+		      profile = "GuiDefaultProfile";
+		      horizSizing = "relative";
+		      vertSizing = "relative";
+		      position = "107 4";
+		      extent = "43 55";
+		      minExtent = "8 8";
+		      visible = "1";
+		      bitmap = "./game/numbers/0.png";
+		      wrap = "0";
+		         helpTag = "0";
+		   };
+		   new GuiBitmapCtrl(BananasTotalOne) {
+		      profile = "GuiDefaultProfile";
+		      horizSizing = "relative";
+		      vertSizing = "relative";
+		      position = "125 4";
+		      extent = "43 55";
+		      minExtent = "8 8";
+		      visible = "1";
+		      bitmap = "./game/numbers/0.png";
+		      wrap = "0";
+		         helpTag = "0";
+		   };
+		   new GuiBitmapCtrl(HUD_ShowBanana) {
+		      profile = "GuiDefaultProfile";
+		      horizSizing = "relative";
+		      vertSizing = "relative";
+		      position = "144 2";
+		      extent = "64 64";
+		      minExtent = "8 8";
+		      visible = "1";
+		      bitmap = "./game/gem.png";
+		      wrap = "0";
+		         helpTag = "0";
+		   };
+	   };
+   };
    new GuiBitmapCtrl(TimeBox) {
       profile = "GuiDefaultProfile";
       horizSizing = "relativeHeight";

@@ -1473,3 +1473,8 @@ function clientTaggedMessageHandler(%msgType, %msgString, %id, %data)
    // like "You've finished!" etc, avar is a no-op
    addChatLine(avar(detag(%msgString),%data));
 }
+
+function clientCmdSetBananaCount(%bananas)
+{
+   PlayGui.setBananaCount(%bananas);
+}

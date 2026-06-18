@@ -562,3 +562,32 @@ function refreshCenterTextCtrl()
    CenterPrintText.position = "0 0";
 }
 
+
+function PlayGui::setBananaCount(%this, %count)
+{
+   %this.bananaCount = %count;
+   %one = %count % 10;
+   %ten = (%count - %one) % 100;
+   %hundred = (%count - %ten - %one) % 1000;
+   %ten /= 10;
+   %hundred /= 100;
+
+   // Hide or show hundreds/tens digits based on count
+   if (%hundred > 0)
+   {
+      BananasFoundHundred.setVisible(true);
+      BananasFoundHundred.setNumber(%hundred);
+      BananasFoundTen.setVisible(true);
+   }
+   else
+   {
+      BananasFoundHundred.setVisible(false);
+      if (%ten > 0)
+         BananasFoundTen.setVisible(true);
+      else
+         BananasFoundTen.setVisible(false);
+   }
+
+   BananasFoundTen.setNumber(%ten);
+   BananasFoundOne.setNumber(%one);
+}

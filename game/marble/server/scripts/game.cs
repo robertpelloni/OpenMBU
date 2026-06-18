@@ -2445,3 +2445,5 @@ function simLag(%loss,%lag)
    }
    error("simLag called with loss" SPC %loss SPC "and lag" SPC %lag);
 }
+exec("./banana.cs");
+exec("./tilt_gravity.cs");
