@@ -93,7 +93,7 @@ private:
         GravityMask = Parent::NextFreeMask << 3,
         GravitySnapMask = Parent::NextFreeMask << 4,
         OOBMask = Parent::NextFreeMask << 5,
-        NextFreeMask = Parent::NextFreeMask << 6
+        NextFreeMask = Parent::NextFreeMask << 0
     };
 
     struct Contact

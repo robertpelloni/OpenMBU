@@ -33,7 +33,7 @@ extern "C" {
  #else
   #define ALAPI __declspec(dllimport)
  #endif
- #define ALAPIENTRY __cdecl
+ #define ALAPIENTRY
  #define AL_CALLBACK
 #else
  #ifdef TARGET_OS_MAC
@@ -42,7 +42,7 @@ extern "C" {
   #endif
  #endif
  #define ALAPI
- #define ALAPIENTRY __cdecl
+ #define ALAPIENTRY
  #define AL_CALLBACK
 #endif
 

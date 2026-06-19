@@ -16,7 +16,7 @@ extern "C" {
   typedef ALCvoid ALCdevice;
   typedef ALCvoid	ALCcontext;
  #endif
- #define ALCAPIENTRY __cdecl
+ #define ALCAPIENTRY
 #else
  #ifdef TARGET_OS_MAC
   #if TARGET_OS_MAC
@@ -24,7 +24,7 @@ extern "C" {
   #endif
  #endif
  #define ALCAPI
- #define ALCAPIENTRY __cdecl
+ #define ALCAPIENTRY
 #endif
 
 

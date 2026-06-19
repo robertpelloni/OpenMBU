@@ -1,3 +1,4 @@
+#include <algorithm>
 //-----------------------------------------------------------------------------
 // Torque Shader Engine
 // Copyright (C) GarageGames.com, Inc.
