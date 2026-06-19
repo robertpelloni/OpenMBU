@@ -42,7 +42,7 @@ SFXALDevice::SFXALDevice(  SFXProvider* provider,
          Con::errorf( "SFXALDevice - Initialization Error: %s", mOpenAL.alcGetString( mDevice, err ) );
    }
 
-   AssertFatal( mDevice != NULL && mContext != NULL, "Failed to create OpenAL device and/or context!" );
+   if(!mDevice || !mContext) { Con::errorf("Failed to create OpenAL device and/or context!"); return; }
 }
 
 

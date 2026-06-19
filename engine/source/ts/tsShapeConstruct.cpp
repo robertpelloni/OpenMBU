@@ -175,7 +175,7 @@ void TSShapeConstructor::initPersistFields()
     for (S32 i = 0; i < MaxSequences; i++)
     {
         dSprintf(buf, sizeof(buf), "sequence%i", i);
-        addFieldV(buf, TypeFilename, Offset(mSequence, TSShapeConstructor) + i * sizeof(StringTableEntry), NULL);
+        addFieldV(buf, TypeFilename, Offset(mSequence, TSShapeConstructor) + i * sizeof(StringTableEntry), NULL, "");
     }
     if (MaxSequences) endGroup("Sequences");
 }
