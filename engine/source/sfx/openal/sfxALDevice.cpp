@@ -58,13 +58,18 @@ SFXALDevice::~SFXALDevice()
       delete (*buffer);
    mBuffers.clear();
 
-   mOpenAL.alcMakeContextCurrent( NULL );
-	mOpenAL.alcDestroyContext( mContext );
-	mOpenAL.alcCloseDevice( mDevice );
+   if ( mContext )
+      mOpenAL.alcMakeContextCurrent( NULL );
+   if ( mContext )
+	   mOpenAL.alcDestroyContext( mContext );
+   if ( mDevice )
+	   mOpenAL.alcCloseDevice( mDevice );
 }
 
 SFXBuffer* SFXALDevice::createBuffer( SFXProfile *profile )
 {
+   if( !mDevice || !mContext ) return NULL;
+
    AssertFatal( profile, "SFXALDevice::createBuffer() - Got null profile!" );
 
    SFXALBuffer* buffer = SFXALBuffer::create(   mOpenAL, 
@@ -79,6 +84,8 @@ SFXBuffer* SFXALDevice::createBuffer( SFXProfile *profile )
 
 SFXVoice* SFXALDevice::createVoice( SFXBuffer *buffer )
 {
+   if( !mDevice || !mContext ) return NULL;
+
    // Don't bother going any further if we've 
    // exceeded the maximum voices.
    if ( mVoices.size() >= mMaxBuffers )
@@ -99,6 +106,8 @@ SFXVoice* SFXALDevice::createVoice( SFXBuffer *buffer )
 
 void SFXALDevice::deleteVoice( SFXVoice* voice )
 {
+   if( !mDevice || !mContext ) return;
+
    AssertFatal( voice, "SFXALDevice::deleteVoice() - Got null voice!" );
 
    SFXALVoice* alVoice = dynamic_cast<SFXALVoice*>( voice );
@@ -114,6 +123,8 @@ void SFXALDevice::deleteVoice( SFXVoice* voice )
 
 void SFXALDevice::update( const SFXListener& listener )
 {
+   if( !mDevice || !mContext ) return;
+
    const MatrixF& transform = listener.getTransform();
    Point3F pos, tupple[2];
    transform.getColumn( 3, &pos );

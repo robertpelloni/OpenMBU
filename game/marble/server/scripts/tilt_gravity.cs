@@ -35,9 +35,35 @@ function updateTiltGravity(%client, %moveX, %moveY)
    %gravZ = %baseZ;
 
    // Set global gravity (Requires exposing setGravity to script if not already)
-   // core()->setGravity("0 0 -19.62");
-   // MBU uses setGravity(%x, %y, %z);
-   setGravity(%gravX, %gravY, %gravZ);
+   if (isObject(%client.player))
+   {
+      %client.player.setGravityDir(%gravX @ " " @ %gravY @ " " @ %gravZ, false);
+   }
 }
 
 // In a real implementation, we would hook this into the move map or marble update tick.
+// We schedule it to run.
+function tiltGravityLoop()
+{
+   cancel($TiltGravitySchedule);
+   if ($Game::TiltGravityMode)
+   {
+      for (%i = 0; %i < ClientGroup.getCount(); %i++)
+      {
+         %client = ClientGroup.getObject(%i);
+         if (isObject(%client.player))
+         {
+            // We'll read the move map input here... well, server side doesn't have the move input directly accessible
+            // easily unless passed through commands. MBU uses move logic in C++.
+            // So we can send a command from client.
+         }
+      }
+   }
+   $TiltGravitySchedule = schedule(32, 0, tiltGravityLoop);
+}
+//tiltGravityLoop(); // Temporarily disabled if we just hook it via client cmds
+
+function serverCmdUpdateTiltGravity(%client, %moveX, %moveY)
+{
+   updateTiltGravity(%client, %moveX, %moveY);
+}

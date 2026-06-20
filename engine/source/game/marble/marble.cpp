@@ -2565,6 +2565,20 @@ ConsoleMethod(Marble, isFrozen, bool, 2, 2, "()")
     return (object->getMode() & Marble::MoveMode) == 0;
 }
 
+ConsoleMethod(Marble, getContactCount, S32, 2, 2, "()")
+{
+    return object->getLastContact().object ? 1 : 0;
+}
+
+ConsoleMethod(Marble, applyImpulse, void, 4, 4, "(Point3F Pos, VectorF vel)")
+{
+    Point3F pos;
+    dSscanf(argv[2], "%g %g %g", &pos.x, &pos.y, &pos.z);
+    VectorF vel;
+    dSscanf(argv[3], "%g %g %g", &vel.x, &vel.y, &vel.z);
+    object->applyImpulse(pos, vel);
+}
+
 ConsoleMethod(Marble, getPowerUpId, S32, 2, 2, "()")
 {
     return object->getPowerUpId();

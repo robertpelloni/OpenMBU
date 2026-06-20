@@ -797,3 +797,25 @@ if (isPCBuild())
    GlobalActionMap.bind(keyboard, "ctrl F3", doProfile);
 }
 
+
+function clientTiltGravityLoop()
+{
+   cancel($ClientTiltGravitySchedule);
+
+   if (isObject(LocalClientConnection))
+   {
+       %moveX = $mvRightAction - $mvLeftAction;
+       %moveY = $mvForwardAction - $mvBackwardAction;
+
+       // Include controller axes if present
+       if (%moveX == 0 && $mvXAxis_L !$= "") %moveX = $mvXAxis_L;
+       if (%moveY == 0 && $mvYAxis_L !$= "") %moveY = $mvYAxis_L;
+
+       commandToServer('UpdateTiltGravity', %moveX, %moveY);
+   }
+
+   $ClientTiltGravitySchedule = schedule(32, 0, clientTiltGravityLoop);
+}
+
+// Start loop
+clientTiltGravityLoop();
