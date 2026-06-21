@@ -2447,3 +2447,8 @@ function simLag(%loss,%lag)
 }
 exec("./banana.cs");
 exec("./tilt_gravity.cs");
+exec("./smb_bumpers.cs");
+exec("./smb_switches.cs");
+exec("./smb_warpgates.cs");
+exec("./smb_platforms.cs");
+exec("./smb_seesaws.cs");

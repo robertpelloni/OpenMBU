@@ -44,3 +44,11 @@
 2. **Collectibles:** Implement a robust item system for Bananas, extending MBU's Gem system.
 3. **Obstacles:** Map MBU's existing hazards (Tornadoes, Bumpers, Fans, Mines) to SMB equivalents and create new ones (Seesaws, Conveyors) using Torque's pathing and trigger systems.
 4. **Minigame Framework:** Create separate game modes (`$Game::Mode = "Target";`) that load specific GUI overlays and alter ball physics (e.g., adding air control for Monkey Target).
+
+## SMB Obstacles Implementation Details
+We have implemented the following obstacles in TorqueScript:
+*   **Bumpers (`smb_bumpers.cs`):** Utilizing a custom `MaterialProperty` (`SMBBumperMaterial`), we increased the default `force` value to `25` (compared to MBU's standard 15) to simulate the harsher knockback of Super Monkey Ball bumpers.
+*   **Switches & Gates (`smb_switches.cs`):** A custom `StaticShape` that triggers a `playThread` animation when pressed, and iterates through a mapped `targetGroup` to activate `PathedInterior` gates.
+*   **Warp Gates (`smb_warpgates.cs`):** A `TriggerData` object that safely intercepts the marble and uses `%obj.setPosition(%destPos, true)` to teleport the player to a target node.
+*   **Elevators/Moving Platforms (`smb_platforms.cs`):** Wrappers around MBU's `PathedInterior` system providing continuous looping audio profiles for typical SMB constant-movement objects.
+*   **Seesaws (`smb_seesaws.cs`):** A `RigidShapeData` element that offsets its `massCenter` below its visual origin (`0 0 -0.5`). This allows the Torque physics engine to naturally balance the object like a pendulum, creating a physics-based seesaw when the marble rolls across it.
