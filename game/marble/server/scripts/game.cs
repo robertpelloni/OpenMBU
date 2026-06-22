@@ -2452,3 +2452,4 @@ exec("./smb_switches.cs");
 exec("./smb_warpgates.cs");
 exec("./smb_platforms.cs");
 exec("./smb_seesaws.cs");
+exec("./smb_monkey_target.cs");

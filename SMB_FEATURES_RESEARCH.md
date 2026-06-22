@@ -52,3 +52,13 @@ We have implemented the following obstacles in TorqueScript:
 *   **Warp Gates (`smb_warpgates.cs`):** A `TriggerData` object that safely intercepts the marble and uses `%obj.setPosition(%destPos, true)` to teleport the player to a target node.
 *   **Elevators/Moving Platforms (`smb_platforms.cs`):** Wrappers around MBU's `PathedInterior` system providing continuous looping audio profiles for typical SMB constant-movement objects.
 *   **Seesaws (`smb_seesaws.cs`):** A `RigidShapeData` element that offsets its `massCenter` below its visual origin (`0 0 -0.5`). This allows the Torque physics engine to naturally balance the object like a pendulum, creating a physics-based seesaw when the marble rolls across it.
+
+## Minigame Prototypes
+### Monkey Target
+*   **Glider Mechanics (`smb_monkey_target.cs`):**
+    *   Toggled via the server command `serverCmdToggleMonkeyTarget`.
+    *   Once enabled, intercepting `triggerNum 1` (the blast/use item button) in `MarbleData::onTrigger` allows the player to deploy/retract their glider.
+    *   Deploying the glider swaps the active datablock to `GliderMarble`, which drastically reduces gravity (20 -> 5) and increases `airAcceleration` (5 -> 25) to provide flight control.
+    *   Deploying also gives a slight upward boost (`applyImpulse` of 2).
+*   **Target Zones:**
+    *   Implemented via `SMBTargetZoneTrigger`. Level designers can place Trigger bounds in the `.mis` file and define dynamic `points` attributes. Landing in these zones halts the player's momentum, awards the points, and safely resets the round to attempt again.

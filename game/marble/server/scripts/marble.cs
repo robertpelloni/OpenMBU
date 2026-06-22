@@ -547,6 +547,23 @@ function MarbleData::onAdd(%this, %obj)
 
 function MarbleData::onTrigger(%this, %obj, %triggerNum, %val)
 {
+   // Monkey Target Glider Toggle (triggerNum 1)
+   if ($Game::MonkeyTargetMode && %triggerNum == 1 && %val)
+   {
+      %obj.isGliding = !%obj.isGliding;
+      if (%obj.isGliding)
+      {
+         %obj.setDataBlock(GliderMarble);
+         // Apply a slight upward boost when deploying wings
+         %obj.applyImpulse("0 0 0", "0 0 2");
+      }
+      else
+      {
+         %obj.setDataBlock(%this); // Revert to DefaultMarble or current
+      }
+      return;
+   }
+
    // triggerNum 2 is the jump trigger
    if (%triggerNum == 2 && %val)
    {

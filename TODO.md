@@ -6,4 +6,4 @@
 - [x] Investigate implementing a gravity-tilt controller mode.
 - [x] Fix compilation issues on Linux and headless audio crash.
 - [x] Add all SMB obstacles (Bumpers, Switches, Gates, Seesaws, Warp Gates, Elevators).
-- [ ] Create a prototype Monkey Target level.
+- [x] Create a prototype Monkey Target level.
