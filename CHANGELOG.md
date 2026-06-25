@@ -1,3 +1,6 @@
+## [0.1.4] - 2026-06-24
+- Implemented C++ physics engine toggle to blend Direct Input Torque mechanics and SMB World-Tilt Gravity.
+
 ## [0.1.2] - 2026-06-23
 - Synchronized and intelligently merged remote feature branches.
 

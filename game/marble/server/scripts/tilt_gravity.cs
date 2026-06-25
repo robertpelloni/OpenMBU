@@ -4,14 +4,36 @@
 
 // Toggle for gravity tilt mode
 $Game::TiltGravityMode = true;
+$Game::TiltBlend = 1.0; // 1.0 means full world tilt, 0.0 means full direct input
 
 function serverCmdToggleTiltGravity(%client)
 {
    $Game::TiltGravityMode = !$Game::TiltGravityMode;
    if ($Game::TiltGravityMode)
+   {
       messageClient(%client, 'MsgSystem', '\c0Tilt Gravity Mode: ENABLED');
+      if (isObject(%client.player))
+         %client.player.setDirectInputBlend(1.0 - $Game::TiltBlend);
+   }
    else
+   {
       messageClient(%client, 'MsgSystem', '\c0Tilt Gravity Mode: DISABLED');
+      if (isObject(%client.player))
+      {
+         %client.player.setDirectInputBlend(1.0);
+         // Reset gravity
+         %client.player.setGravityDir("0 0 -19.62", true);
+      }
+   }
+}
+
+function serverCmdSetTiltBlend(%client, %blend)
+{
+   $Game::TiltBlend = %blend;
+   if ($Game::TiltGravityMode && isObject(%client.player))
+   {
+      %client.player.setDirectInputBlend(1.0 - $Game::TiltBlend);
+   }
 }
 
 // Hook into marble update or player update to tilt the gravity vector
@@ -23,12 +45,16 @@ function updateTiltGravity(%client, %moveX, %moveY)
    if (!$Game::TiltGravityMode)
       return;
 
+   // Also set the blend to the player so they move less with input when tilt is higher
+   if (isObject(%client.player))
+      %client.player.setDirectInputBlend(1.0 - $Game::TiltBlend);
+
    // Base gravity
    %baseZ = -19.62;
 
    // Calculate tilt based on input (moveX/moveY are typically -1 to 1)
    // We want a max tilt of maybe 20 degrees
-   %maxTilt = 0.3; // Multiplier for gravity vector
+   %maxTilt = 0.3 * $Game::TiltBlend; // Multiplier for gravity vector
 
    %gravX = %moveX * %baseZ * %maxTilt;
    %gravY = %moveY * %baseZ * %maxTilt;

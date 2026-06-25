@@ -1,3 +1,5 @@
+#!/bin/bash
+cat << 'HANDOFF' > HANDOFF.md
 # Session Handoff Document
 
 ## Current Status
@@ -8,3 +10,5 @@
 ## Next Steps for Successor Model
 1. Proceed down the `ROADMAP.md` list (Collectables Expansion, Party Game Framework, Boss Systems).
 2. Continue executing autonomously and ensure `CHANGELOG.md` and `VERSION.md` are updated on every major commit.
+
+HANDOFF

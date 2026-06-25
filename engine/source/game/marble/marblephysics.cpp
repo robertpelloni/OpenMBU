@@ -266,6 +266,7 @@ bool Marble::computeMoveForces(Point3D& aControl, Point3D& desiredOmega, const M
     Point2F currentVelocity(mDot(sideDir, rollVelocity), mDot(motionDir, rollVelocity));
 
     Point2F mv(move->x, move->y);
+    mv *= mDirectInputBlend; // Apply blending for tilt mode (0.0 means world-tilt only)
     if (mPhysics != MBG && mPhysics != MBGSlopes)
     {
         // Prevent increasing marble speed with diagonal movement (on the ground)

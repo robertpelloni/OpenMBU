@@ -1724,6 +1724,12 @@ function GameConnection::createPlayer(%this, %spawnPoint)
    echo ("Using " @ %physics @ " Physics");
    %player.setPhysics(%physics);
 
+   // Set initial tilt blend
+   if ($Game::TiltGravityMode)
+      %player.setDirectInputBlend(1.0 - $Game::TiltBlend);
+   else
+      %player.setDirectInputBlend(1.0);
+
    // Player setup...
    %spawnPos = getSpawnPosition(%spawnPoint);
    %player.setPosition(%spawnPos, 0.45);
