@@ -1,3 +1,6 @@
+## [0.1.5] - 2026-06-24
+- Executed Repository Synchronization & Intelligent Merge. Fast-forwarded and reconciled AI feature branches.
+
 ## [0.1.4] - 2026-06-24
 - Implemented C++ physics engine toggle to blend Direct Input Torque mechanics and SMB World-Tilt Gravity.
 
