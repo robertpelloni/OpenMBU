@@ -1,3 +1,9 @@
+## [0.1.6] - 2026-06-24
+- Implemented modular Party Game Framework.
+- Refactored Monkey Target to use the new framework architecture.
+- Scaffolded scripts for Golf, Billiards, and Bowling minigames.
+- Integrated framework hooks directly into the server game loop.
+
 ## [0.1.5] - 2026-06-24
 - Executed Repository Synchronization & Intelligent Merge. Fast-forwarded and reconciled AI feature branches.
 

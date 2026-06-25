@@ -1,13 +1,13 @@
 # Session Handoff Document
 
 ## Current Status
-- Upstream and local submodules have been verified and fetched.
-- Performed an intelligent, two-way branch reconciliation, catching up feature branches with `master`.
-- Fixed a conflict inside README.md originating from remote tracking.
-- Successfully implemented Engine-level physics blending between classic Torque direct-input mechanics and Super Monkey Ball-style World-Tilting mechanics.
-- A new `mDirectInputBlend` scalar has been added to `marblephysics.cpp` and exposed to TorqueScript.
-- `tilt_gravity.cs` now properly manages `$Game::TiltBlend` and adjusts the player's direct input scale automatically.
+- Successfully implemented the Party Game Framework requested in the ROADMAP.
+- `party_framework.cs` acts as the router to parse `MissionInfo.minigameType` and dispatch events to individual minigame scripts.
+- Refactored `smb_monkey_target.cs` to utilize these hooks securely.
+- Created robust script stubs for Billiards, Golf, and Bowling minigames (`smb_billiards.cs`, `smb_golf.cs`, `smb_bowling.cs`).
+- Integrated framework calls seamlessly into the master `game.cs` loop (handling `onMissionLoaded`, `onMissionEnded`, `onPlayerJoin`, `onPlayerSpawn`).
+- Updated TODO list tracking milestones.
 
 ## Next Steps for Successor Model
-1. Proceed down the `ROADMAP.md` list (Collectables Expansion, Party Game Framework, Boss Systems).
+1. Proceed down the `ROADMAP.md` list (Implement Boss System Framework).
 2. Continue executing autonomously and ensure `CHANGELOG.md` and `VERSION.md` are updated on every major commit.

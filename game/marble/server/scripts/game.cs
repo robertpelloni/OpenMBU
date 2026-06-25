@@ -127,6 +127,8 @@ function onMissionLoaded()
    else
       $Game::GemCount = countGems(MissionGroup);
       
+   PartyFramework::onMissionLoaded();
+
    initRandomSpawnPoints();
 
    // JMQ: don't start mission yet, wait for command from Lobby 
@@ -140,6 +142,8 @@ function onMissionLoaded()
 
 function onMissionEnded()
 {
+   PartyFramework::onMissionEnded();
+
    // Called by endMission(), right before the mission is destroyed
    // This part of a normal mission cycling or end.
    endGame();
@@ -1013,6 +1017,8 @@ function GameConnection::onClientEnterGame(%this)
 
    if ($Game::packetLoss || $Game::packetLag)
       %this.setSimulatedNetParams($Game::packetLoss,$Game::packetLag/2);
+
+   PartyFramework::onPlayerJoin(%this);
 }
 
 function GameConnection::onClientJoinGame(%this)
@@ -1753,6 +1759,9 @@ function GameConnection::createPlayer(%this, %spawnPoint)
    // Give the client control of the player
    %this.player = %player;
    %this.setControlObject(%player);
+
+   // Hook into Party Framework
+   PartyFramework::onPlayerSpawn(%player);
 }
 
 
@@ -2459,3 +2468,7 @@ exec("./smb_warpgates.cs");
 exec("./smb_platforms.cs");
 exec("./smb_seesaws.cs");
 exec("./smb_monkey_target.cs");
+exec("./smb_billiards.cs");
+exec("./smb_golf.cs");
+exec("./smb_bowling.cs");
+exec("./party_framework.cs");

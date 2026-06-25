@@ -2,8 +2,6 @@
 // Super Monkey Ball: Monkey Target Prototype
 //-----------------------------------------------------------------------------
 
-$Game::MonkeyTargetMode = false;
-
 // Glider datablock config
 datablock MarbleData(GliderMarble : DefaultMarble)
 {
@@ -12,19 +10,48 @@ datablock MarbleData(GliderMarble : DefaultMarble)
    maxRollVelocity = 25; // Faster airborne
 };
 
+// Framework Hooks
+function MonkeyTargetMinigame::onStart()
+{
+   echo("Monkey Target Minigame initialized!");
+   $Game::MonkeyTargetMode = true;
+}
+
+function MonkeyTargetMinigame::onEnd()
+{
+   echo("Monkey Target Minigame shutting down!");
+   $Game::MonkeyTargetMode = false;
+}
+
+function MonkeyTargetMinigame::onPlayerJoin(%client)
+{
+   %client.score = 0;
+   messageClient(%client, 'MsgSystem', '\c0Monkey Target Mode Active! Fly to the targets.');
+}
+
+function MonkeyTargetMinigame::onPlayerSpawn(%player)
+{
+   %player.isGliding = false;
+   %player.setDataBlock(DefaultMarble);
+}
+
 function serverCmdToggleMonkeyTarget(%client)
 {
    $Game::MonkeyTargetMode = !$Game::MonkeyTargetMode;
    if ($Game::MonkeyTargetMode)
    {
       messageClient(%client, 'MsgSystem', '\c0Monkey Target Mode: ENABLED');
-      %client.player.isGliding = false;
+      if (isObject(%client.player))
+         %client.player.isGliding = false;
    }
    else
    {
       messageClient(%client, 'MsgSystem', '\c0Monkey Target Mode: DISABLED');
-      %client.player.isGliding = false;
-      %client.player.setDataBlock(DefaultMarble);
+      if (isObject(%client.player))
+      {
+         %client.player.isGliding = false;
+         %client.player.setDataBlock(DefaultMarble);
+      }
    }
 }
 
