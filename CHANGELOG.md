@@ -1,3 +1,8 @@
+## [0.1.7] - 2026-06-24
+- Implemented Multi-Stage Boss Framework for Story Mode.
+- Created `ApeBoss` prototype entity showcasing AI loops and phase transitions.
+- Integrated Boss UI using the `bottomPrint` GUI module.
+
 ## [0.1.6] - 2026-06-24
 - Implemented modular Party Game Framework.
 - Refactored Monkey Target to use the new framework architecture.

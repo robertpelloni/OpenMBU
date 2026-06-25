@@ -8,4 +8,4 @@
 - [x] Add all SMB obstacles (Bumpers, Switches, Gates, Seesaws, Warp Gates, Elevators).
 - [x] Create a prototype Monkey Target level.
 - [x] Build modular system for minigames (Target, Billiards, Golf, Bowling).
-- [ ] Implement multi-stage boss logic for story mode.
+- [x] Implement multi-stage boss logic for story mode.

@@ -2472,3 +2472,5 @@ exec("./smb_billiards.cs");
 exec("./smb_golf.cs");
 exec("./smb_bowling.cs");
 exec("./party_framework.cs");
+exec("./boss_framework.cs");
+exec("./smb_boss_ape.cs");
