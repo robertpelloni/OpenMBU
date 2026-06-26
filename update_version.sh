@@ -1,10 +1,9 @@
 #!/bin/bash
-echo "0.1.8" > VERSION.md
+echo "0.1.9" > VERSION.md
 cat << 'LOG' > CHANGELOG_NEW.md
-## [0.1.8] - 2026-06-24
-- Fully integrated Obstacle Prototypes and Minigame hooks.
-- Created `obstacle_course.mis` prototyping Bumpers, Switches, Gates, and Seesaws.
-- Updated `monkey_target.mis` to accurately bind to the Party Game Framework.
+## [0.1.9] - 2026-06-24
+- Refined Bumper physics to manually apply outward collision impulses.
+- Extended Switch logic to universally support Platform, Door, and Spawn action types.
 
 LOG
 cat CHANGELOG.md >> CHANGELOG_NEW.md

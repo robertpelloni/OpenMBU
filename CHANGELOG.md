@@ -1,3 +1,7 @@
+## [0.1.9] - 2026-06-24
+- Refined Bumper physics to manually apply outward collision impulses.
+- Extended Switch logic to universally support Platform, Door, and Spawn action types.
+
 ## [0.1.8] - 2026-06-24
 - Fully integrated Obstacle Prototypes and Minigame hooks.
 - Created `obstacle_course.mis` prototyping Bumpers, Switches, Gates, and Seesaws.
