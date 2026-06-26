@@ -1,10 +1,10 @@
 #!/bin/bash
-echo "0.1.7" > VERSION.md
+echo "0.1.8" > VERSION.md
 cat << 'LOG' > CHANGELOG_NEW.md
-## [0.1.7] - 2026-06-24
-- Implemented Multi-Stage Boss Framework for Story Mode.
-- Created `ApeBoss` prototype entity showcasing AI loops and phase transitions.
-- Integrated Boss UI using the `bottomPrint` GUI module.
+## [0.1.8] - 2026-06-24
+- Fully integrated Obstacle Prototypes and Minigame hooks.
+- Created `obstacle_course.mis` prototyping Bumpers, Switches, Gates, and Seesaws.
+- Updated `monkey_target.mis` to accurately bind to the Party Game Framework.
 
 LOG
 cat CHANGELOG.md >> CHANGELOG_NEW.md
