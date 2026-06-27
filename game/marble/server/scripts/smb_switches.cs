@@ -35,51 +35,22 @@ function SMBSwitchClass::onCollision(%this, %obj, %col, %vec, %vecLen, %material
       if(isObject(%this.sound))
          %obj.playAudio(0, %this.sound);
 
-      // Execute based on actionType
-      %action = (%obj.actionType !$= "") ? %obj.actionType : "Platform";
-
-      switch$ (%action)
+      // Trigger the gate or elevator mapped to this switch
+      if (%obj.targetGroup !$= "")
       {
-         case "Platform":
-            // Trigger the gate or elevator mapped to this switch
-            if (%obj.targetGroup !$= "")
+         %group = %obj.targetGroup;
+         if (isObject(%group))
+         {
+            for (%i = 0; (%plat = %group.getObject(%i)) != -1; %i++)
             {
-               %group = %obj.targetGroup;
-               if (isObject(%group))
+               if (%plat.getClassName() $= "PathedInterior")
                {
-                  for (%i = 0; (%plat = %group.getObject(%i)) != -1; %i++)
-                  {
-                     if (%plat.getClassName() $= "PathedInterior")
-                     {
-                        // Assuming -2 plays the path forward, or targetTime specifies position
-                        %targetPos = (%obj.targetPos !$= "") ? %obj.targetPos : -2;
-                        %plat.setTargetPosition(%targetPos);
-                     }
-                  }
+                  // Assuming -2 plays the path forward, or targetTime specifies position
+                  %targetPos = (%obj.targetPos !$= "") ? %obj.targetPos : -2;
+                  %plat.setTargetPosition(%targetPos);
                }
             }
-
-         case "Spawn":
-            // Spawn a random banana or item
-            if (%obj.spawnDataBlock !$= "")
-            {
-               %spawnPos = VectorAdd(%obj.getPosition(), "0 0 2");
-               %item = new Item() {
-                  dataBlock = %obj.spawnDataBlock;
-                  position = %spawnPos;
-               };
-               MissionCleanup.add(%item);
-            }
-
-         case "Door":
-            // Hide or delete a blocking object
-            if (isObject(%obj.targetDoor))
-            {
-               // Move it down by 10 units to simulate opening
-               %doorPos = %obj.targetDoor.getPosition();
-               %newPos = VectorSub(%doorPos, "0 0 10");
-               %obj.targetDoor.setPosition(%newPos);
-            }
+         }
       }
    }
 }

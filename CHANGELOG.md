@@ -1,6 +1,14 @@
-## [0.1.9] - 2026-06-24
-- Refined Bumper physics to manually apply outward collision impulses.
-- Extended Switch logic to universally support Platform, Door, and Spawn action types.
+## [0.1.10] - 2026-06-25
+- Developed and integrated the Monkey Bowling minigame.
+- Created `bowling_alley.mis` and fleshed out `smb_bowling.cs` with aiming restriction, forward impulse throws, and a pin collision/tipping calculator.
+
+## [0.1.11] - 2026-06-24
+- Fixed TorqueScript scoping bug where `PartyFramework::onPlayerJoin` and `onPlayerSpawn` had an invalid `%this` signature, causing minigame initialization data tracking to fail.
+
+## [0.1.10] - 2026-06-24
+- Implemented Monkey Bowling prototype utilizing the Party Game Framework.
+- Scripted dynamic pin spawning and `SMBBowlingPin` tipping physics.
+- Established `serverCmdBowlingThrow` to restrict horizontal aiming and force velocity application.
 
 ## [0.1.8] - 2026-06-24
 - Fully integrated Obstacle Prototypes and Minigame hooks.

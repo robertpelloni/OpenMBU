@@ -1,11 +1,12 @@
 # Session Handoff Document
 
 ## Current Status
-- Enhanced `smb_bumpers.cs` to accurately bounce the marble outward using direct vector manipulation via `applyImpulse` (compensating for arbitrary `.dts` material limitations).
-- Expanded `smb_switches.cs` to dynamically evaluate `%obj.actionType`, serving as a generalized level-design trigger for platforms, hidden doors, and item spawning.
-- All ROADMAP items (Physics Overhaul, Collectables, Obstacles, Party Framework, Bosses) have their core integrations complete.
+- Integrated Monkey Bowling minigame successfully.
+- `smb_bowling.cs` handles aiming (restricting movement via `setMode(2)`), executes throws via `serverCmdBowlingThrow` using dynamic `applyImpulse` physics, and calculates pin knocked counts based on Z-axis/lane bounds deviations.
+- Prototyped `bowling_alley.mis` testing zone, seamlessly triggering `party_framework.cs` callbacks on mission load.
+- Updated version numbers and changelogs. All major immediate framework tasks for minigames are now functionally mocked out.
 
 ## Next Steps for Successor Model
-1. Complete polish on any remaining specific UI elements for minigames or boss battles.
-2. Review level prototyping scripts (`obstacle_course.mis`) to ensure the expanded properties (like `actionType="Spawn"`) are heavily utilized in level design.
-3. Keep the git executive protocol and autonomous nature continuing.
+1. Complete remaining minigames (Golf and Billiards) in a similar physics-forward manner.
+2. We need robust `.mis` file creation to string these obstacles, bosses, and minigames together into a cohesive campaign layer.
+3. Review `IDEAS.md` for UI and input expansions (like Controller Gyro support).

@@ -44,7 +44,9 @@ function PartyFramework::onMissionEnded(%this)
    }
 }
 
-function PartyFramework::onPlayerJoin(%this, %client)
+// Note: Since these are called as static namespace functions (e.g. PartyFramework::onPlayerJoin(%this)),
+// the first argument passed is the client/player. We adjust the signature to match.
+function PartyFramework::onPlayerJoin(%client)
 {
    if ($Game::MinigameActive)
    {
@@ -57,7 +59,7 @@ function PartyFramework::onPlayerJoin(%this, %client)
    }
 }
 
-function PartyFramework::onPlayerSpawn(%this, %player)
+function PartyFramework::onPlayerSpawn(%player)
 {
    if ($Game::MinigameActive)
    {
