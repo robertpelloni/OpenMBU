@@ -3,14 +3,13 @@ cat << 'HANDOFF' > HANDOFF.md
 # Session Handoff Document
 
 ## Current Status
-- Integrated Monkey Bowling minigame successfully.
-- `smb_bowling.cs` handles aiming (restricting movement via `setMode(2)`), executes throws via `serverCmdBowlingThrow` using dynamic `applyImpulse` physics, and calculates pin knocked counts based on Z-axis/lane bounds deviations.
-- Prototyped `bowling_alley.mis` testing zone, seamlessly triggering `party_framework.cs` callbacks on mission load.
-- Updated version numbers and changelogs. All major immediate framework tasks for minigames are now functionally mocked out.
+- Finalized Phase 4 of ROADMAP: Party Game Framework.
+- Implemented `smb_billiards.cs`, complete with an `SMBBilliardBall` datablock designed for high restitution/low friction, and a striking command loop.
+- Implemented `smb_golf.cs`, tracking player strokes and integrating `SMBHoleTrigger` to catch the ball and advance levels.
+- All core framework milestones from the original user directives are now prototyped and bound successfully.
 
 ## Next Steps for Successor Model
-1. Complete remaining minigames (Golf and Billiards) in a similar physics-forward manner.
-2. We need robust `.mis` file creation to string these obstacles, bosses, and minigames together into a cohesive campaign layer.
-3. Review `IDEAS.md` for UI and input expansions (like Controller Gyro support).
+1. Complete remaining polish. We need robust `.mis` file creation to string these minigames into a comprehensive campaign layer, as the physics and scripting hooks are now robust.
+2. Review `IDEAS.md` for extended concepts (multiplayer networking optimizations, dedicated UI aesthetic overhauls, gyro controls).
 
 HANDOFF
