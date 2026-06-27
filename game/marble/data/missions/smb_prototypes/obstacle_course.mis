@@ -98,6 +98,16 @@ new SimGroup(MissionGroup) {
       destination = "0 -20 10"; // Warp high up
    };
 
+   new Trigger() {
+      position = "0 -10 0.5";
+      rotation = "1 0 0 0";
+      scale = "10 5 1";
+      dataBlock = "SMBConveyorTrigger";
+      polyhedron = "0.0000000 0.0000000 0.0000000 1.0000000 0.0000000 0.0000000 0.0000000 -1.0000000 0.0000000 0.0000000 0.0000000 1.0000000";
+      pushDir = "0 1 0";
+      pushForce = "20";
+   };
+
    // End Pad
    new StaticShape(EndPoint) {
       position = "30 0 0";

@@ -3,13 +3,13 @@ cat << 'HANDOFF' > HANDOFF.md
 # Session Handoff Document
 
 ## Current Status
-- Finalized Phase 4 of ROADMAP: Party Game Framework.
-- Implemented `smb_billiards.cs`, complete with an `SMBBilliardBall` datablock designed for high restitution/low friction, and a striking command loop.
-- Implemented `smb_golf.cs`, tracking player strokes and integrating `SMBHoleTrigger` to catch the ball and advance levels.
-- All core framework milestones from the original user directives are now prototyped and bound successfully.
+- Finished adding dynamic conveyor belts via `smb_conveyors.cs`. These rely on rapid triggering (`onTickTrigger`) to continuously push the marble.
+- Jump mechanics within `marble.cs` have been refactored for tunable impact via `$Game::JumpForce`.
+- Submodules, logs, and Git hygiene have been strictly maintained.
 
 ## Next Steps for Successor Model
-1. Complete remaining polish. We need robust `.mis` file creation to string these minigames into a comprehensive campaign layer, as the physics and scripting hooks are now robust.
-2. Review `IDEAS.md` for extended concepts (multiplayer networking optimizations, dedicated UI aesthetic overhauls, gyro controls).
+1. Complete remaining Polish on physics values (restitution, slip, airAcceleration) to match true SMB parity.
+2. We need robust `.mis` file creation to string these obstacles, bosses, and minigames together into a cohesive campaign layer.
+3. Review `IDEAS.md` for extended concepts (multiplayer networking optimizations, dedicated UI aesthetic overhauls, gyro controls).
 
 HANDOFF

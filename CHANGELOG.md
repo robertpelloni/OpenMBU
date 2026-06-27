@@ -1,7 +1,6 @@
-## [0.1.11] - 2026-06-25
-- Finalized Party Game Framework scripts for Billiards and Golf minigames.
-- Integrated `serverCmdBilliardsStrike` and `serverCmdGolfPutt` physics impulses.
-- Set up target/pocket triggers for score tracking.
+## [0.1.12] - 2026-06-25
+- Implemented script logic for SMB Conveyor Belts via continuous `applyImpulse` on tick.
+- Refined the Banana Blitz jump mechanic to utilize a customizable `$Game::JumpForce` parameter.
 
 ## [0.1.10] - 2026-06-25
 - Developed and integrated the Monkey Bowling minigame.

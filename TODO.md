@@ -9,5 +9,4 @@
 - [x] Create a prototype Monkey Target level.
 - [x] Build modular system for minigames (Target, Billiards, Golf, Bowling).
 - [x] Implement Monkey Bowling map and logic.
-- [x] Implement Billiards and Golf minigame logic.
 - [x] Implement multi-stage boss logic for story mode.

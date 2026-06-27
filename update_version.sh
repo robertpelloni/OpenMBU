@@ -1,10 +1,9 @@
 #!/bin/bash
-echo "0.1.11" > VERSION.md
+echo "0.1.12" > VERSION.md
 cat << 'LOG' > CHANGELOG_NEW.md
-## [0.1.11] - 2026-06-25
-- Finalized Party Game Framework scripts for Billiards and Golf minigames.
-- Integrated `serverCmdBilliardsStrike` and `serverCmdGolfPutt` physics impulses.
-- Set up target/pocket triggers for score tracking.
+## [0.1.12] - 2026-06-25
+- Implemented script logic for SMB Conveyor Belts via continuous `applyImpulse` on tick.
+- Refined the Banana Blitz jump mechanic to utilize a customizable `$Game::JumpForce` parameter.
 
 LOG
 cat CHANGELOG.md >> CHANGELOG_NEW.md
