@@ -3,11 +3,7 @@
 //-----------------------------------------------------------------------------
 
 // Monkey Target Configuration Variables
-$Game::MonkeyTarget::DefaultPoints = 100;
-$Game::MonkeyTarget::ResetDelayMS = 2000;
-$Game::MonkeyTarget::GliderGravity = 5;
-$Game::MonkeyTarget::GliderAirAccel = 25.0;
-$Game::MonkeyTarget::GliderMaxRoll = 25;
+// Values are now defined in gameParams.cs
 
 // Glider datablock config
 datablock MarbleData(GliderMarble : DefaultMarble)

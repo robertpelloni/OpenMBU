@@ -51,10 +51,12 @@ function serverCmdBowlingThrow(%client, %power)
       $Game::BowlingState = "Rolling";
       // Apply massive forward impulse to emulate throw
       %client.player.setMode(1); // Normal movement
-      %client.player.applyImpulse("0 0 0", "0" SPC (%power * 50) SPC "0");
+      %powerMult = ($Game::MonkeyBowling::StrikePowerMult !$= "") ? $Game::MonkeyBowling::StrikePowerMult : 50;
+      %client.player.applyImpulse("0 0 0", "0" SPC (%power * %powerMult) SPC "0");
 
       // Schedule score calculation
-      schedule(5000, 0, "calculateBowlingScore", %client);
+      %delay = ($Game::MonkeyBowling::ScoreDelayMS !$= "") ? $Game::MonkeyBowling::ScoreDelayMS : 5000;
+      schedule(%delay, 0, "calculateBowlingScore", %client);
    }
 }
 

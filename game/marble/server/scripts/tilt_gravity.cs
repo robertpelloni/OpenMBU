@@ -3,13 +3,12 @@
 //-----------------------------------------------------------------------------
 
 // Toggle for gravity tilt mode
-$Game::TiltGravityMode = true;
-$Game::TiltBlend = 1.0; // 1.0 means full world tilt, 0.0 means full direct input
+// Values are now defined in gameParams.cs ($Game::UseWorldTilt, $Game::TiltBlend)
 
 function serverCmdToggleTiltGravity(%client)
 {
-   $Game::TiltGravityMode = !$Game::TiltGravityMode;
-   if ($Game::TiltGravityMode)
+   $Game::UseWorldTilt = !$Game::UseWorldTilt;
+   if ($Game::UseWorldTilt)
    {
       messageClient(%client, 'MsgSystem', '\c0Tilt Gravity Mode: ENABLED');
       if (isObject(%client.player))
@@ -30,7 +29,7 @@ function serverCmdToggleTiltGravity(%client)
 function serverCmdSetTiltBlend(%client, %blend)
 {
    $Game::TiltBlend = %blend;
-   if ($Game::TiltGravityMode && isObject(%client.player))
+   if ($Game::UseWorldTilt && isObject(%client.player))
    {
       %client.player.setDirectInputBlend(1.0 - $Game::TiltBlend);
    }
@@ -42,7 +41,7 @@ function serverCmdSetTiltBlend(%client, %blend)
 
 function updateTiltGravity(%client, %moveX, %moveY)
 {
-   if (!$Game::TiltGravityMode)
+   if (!$Game::UseWorldTilt)
       return;
 
    // Also set the blend to the player so they move less with input when tilt is higher
@@ -72,7 +71,7 @@ function updateTiltGravity(%client, %moveX, %moveY)
 function tiltGravityLoop()
 {
    cancel($TiltGravitySchedule);
-   if ($Game::TiltGravityMode)
+   if ($Game::UseWorldTilt)
    {
       for (%i = 0; %i < ClientGroup.getCount(); %i++)
       {

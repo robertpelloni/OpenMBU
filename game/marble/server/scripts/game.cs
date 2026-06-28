@@ -47,6 +47,9 @@ function execServerScripts()
       
    $Server::ScriptsLoaded = true;
    
+   // central game parameters
+   exec("./gameParams.cs");
+
    // game commands (lobby, ready status, and stuff)
    exec("./gameCommands.cs");
    
