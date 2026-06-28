@@ -19,3 +19,7 @@ $Game::MonkeyTarget::GliderMaxRoll = 25;
 // Party Minigame: Monkey Bowling
 $Game::MonkeyBowling::ScoreDelayMS = 5000;
 $Game::MonkeyBowling::StrikePowerMult = 50;
+
+// Party Minigame: Monkey Golf
+$Game::MonkeyGolf::MaxPower = 100;
+$Game::MonkeyGolf::PowerMult = 25;
