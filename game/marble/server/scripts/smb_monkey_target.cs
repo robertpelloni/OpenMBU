@@ -89,6 +89,7 @@ function SMBTargetZoneTrigger::onEnterTrigger(%this, %trigger, %obj)
       {
          %client.score += %points;
          messageClient(%client, 'MsgSystem', '\c0Monkey Target Landed! Points: %1', %points);
+         bottomPrint(%client, "Landed! Points: " @ %points @ "<br>Total Score: " @ %client.score, 3000, 2);
       }
 
       // Revert glider and end round
@@ -105,5 +106,36 @@ function SMBTargetZoneTrigger::onEnterTrigger(%this, %trigger, %obj)
       // For now, we'll just freeze them briefly and log the score.
       %obj.setMode(0); // Freeze mode
       schedule($Game::MonkeyTarget::ResetDelayMS, 0, "serverCmdRestartLevel", %client);
+   }
+}
+
+//-----------------------------------------------------------------------------
+// Wind Tunnel Obstacle for Monkey Target
+//-----------------------------------------------------------------------------
+
+datablock TriggerData(SMBWindTunnelTrigger)
+{
+   tickPeriodMS = 50; // Fast ticks for smooth physics force
+};
+
+function SMBWindTunnelTrigger::onEnterTrigger(%this, %trigger, %obj)
+{
+   if (%obj.getClassName() $= "Marble" && %obj.isGliding)
+   {
+      // Optional enter sound
+   }
+}
+
+function SMBWindTunnelTrigger::onTickTrigger(%this, %trigger)
+{
+   for (%i = 0; %i < %trigger.getNumObjects(); %i++)
+   {
+      %obj = %trigger.getObject(%i);
+      if (%obj.getClassName() $= "Marble" && %obj.isGliding)
+      {
+         // Get the force vector from the trigger's dynamic field, default to strong updraft
+         %force = (%trigger.windForce !$= "") ? %trigger.windForce : "0 0 15";
+         %obj.applyImpulse("0 0 0", %force);
+      }
    }
 }
