@@ -99,12 +99,29 @@ function calculateBowlingScore(%client)
 
          // In Torque, transform is PosX PosY PosZ AxisX AxisY AxisZ Angle
          // To accurately check tipping, we really need the up vector from the matrix.
-         // As a prototype, if it moved significantly in XY or Z changed, it's knocked.
+         // If a pin is knocked over, the angle of the Z axis will deviate significantly.
+
+         %axisX = getWord(%transform, 3);
+         %axisY = getWord(%transform, 4);
+         %axisZ = getWord(%transform, 5);
+         %angle = getWord(%transform, 6);
 
          %pos = %obj.getPosition();
-         if (getWord(%pos, 2) < -5) // Fell off the lane
+
+         // Pin is knocked over if it has fallen off the lane (Z < -5)
+         // OR if its rotation angle suggests it's tipped over (e.g. angle > 0.5 rad on XY axes)
+
+         %isTipped = false;
+
+         // If axis is largely X or Y, and angle is significant, it's tipped.
+         if (mAbs(%axisZ) < 0.8 && %angle > 0.5)
+            %isTipped = true;
+
+         if (getWord(%pos, 2) < -5 || %isTipped)
          {
             %knockedOver++;
+            // Optionally remove or disable the knocked pin
+            // %obj.delete(); // Keep it for visual though
          }
       }
    }

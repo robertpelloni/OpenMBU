@@ -2,12 +2,19 @@
 // Super Monkey Ball: Monkey Target Prototype
 //-----------------------------------------------------------------------------
 
+// Monkey Target Configuration Variables
+$Game::MonkeyTarget::DefaultPoints = 100;
+$Game::MonkeyTarget::ResetDelayMS = 2000;
+$Game::MonkeyTarget::GliderGravity = 5;
+$Game::MonkeyTarget::GliderAirAccel = 25.0;
+$Game::MonkeyTarget::GliderMaxRoll = 25;
+
 // Glider datablock config
 datablock MarbleData(GliderMarble : DefaultMarble)
 {
-   gravity = 5; // Reduced gravity for gliding
-   airAcceleration = 25.0; // High air control
-   maxRollVelocity = 25; // Faster airborne
+   gravity = $Game::MonkeyTarget::GliderGravity; // Reduced gravity for gliding
+   airAcceleration = $Game::MonkeyTarget::GliderAirAccel; // High air control
+   maxRollVelocity = $Game::MonkeyTarget::GliderMaxRoll; // Faster airborne
 };
 
 // Framework Hooks
@@ -74,7 +81,7 @@ function SMBTargetZoneTrigger::onEnterTrigger(%this, %trigger, %obj)
    if (%obj.getClassName() $= "Marble" && $Game::MonkeyTargetMode)
    {
       // Extract points from the trigger's dynamic field (e.g. %trigger.points)
-      %points = (%trigger.points !$= "") ? %trigger.points : 100;
+      %points = (%trigger.points !$= "") ? %trigger.points : $Game::MonkeyTarget::DefaultPoints;
 
       // Add points
       %client = %obj.client;
@@ -88,9 +95,15 @@ function SMBTargetZoneTrigger::onEnterTrigger(%this, %trigger, %obj)
       %obj.isGliding = false;
       %obj.setDataBlock(DefaultMarble);
 
+      // Play a sound for scoring
+      if (isObject(pickupSfx))
+      {
+         serverPlay3D(pickupSfx, %obj.getTransform());
+      }
+
       // Optionally reset the level or marble to the start for the next attempt
       // For now, we'll just freeze them briefly and log the score.
       %obj.setMode(0); // Freeze mode
-      schedule(2000, 0, "serverCmdRestartLevel", %client);
+      schedule($Game::MonkeyTarget::ResetDelayMS, 0, "serverCmdRestartLevel", %client);
    }
 }
