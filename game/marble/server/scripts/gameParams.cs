@@ -23,3 +23,6 @@ $Game::MonkeyBowling::StrikePowerMult = 50;
 // Party Minigame: Monkey Golf
 $Game::MonkeyGolf::MaxPower = 100;
 $Game::MonkeyGolf::PowerMult = 25;
+
+// Party Minigame: Monkey Billiards
+$Game::MonkeyBilliards::CuePowerMult = 40;
