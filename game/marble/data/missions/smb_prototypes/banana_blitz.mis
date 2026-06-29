@@ -2,11 +2,10 @@
 new SimGroup(MissionGroup) {
 
    new ScriptObject(MissionInfo) {
-      name = "Monkey Target Prototype";
-      desc = "Roll down the ramp and hit the triggers in the sky!";
+      name = "Banana Blitz Prototype";
+      desc = "Test banana collectable spawn patterns and lives thresholds.";
       type = "Custom";
       level = "1";
-      minigameType = "MonkeyTarget";
       include = "1";
    };
 
@@ -37,22 +36,41 @@ new SimGroup(MissionGroup) {
       dataBlock = "StartPad";
    };
 
-   new Trigger(Target500) {
-      position = "0 200 -50";
+   // Spawn a bunch of bananas in a line
+   new Item() {
+      position = "0 5 1";
       rotation = "1 0 0 0";
-      scale = "20 20 5";
-      dataBlock = "SMBTargetZoneTrigger";
-      polyhedron = "0.0000000 0.0000000 0.0000000 1.0000000 0.0000000 0.0000000 0.0000000 -1.0000000 0.0000000 0.0000000 0.0000000 1.0000000";
-      points = "500";
+      scale = "1 1 1";
+      dataBlock = "BananaItem";
    };
 
-   new Trigger(Target100) {
-      position = "0 100 -20";
+   new Item() {
+      position = "0 10 1";
       rotation = "1 0 0 0";
-      scale = "40 40 5";
-      dataBlock = "SMBTargetZoneTrigger";
-      polyhedron = "0.0000000 0.0000000 0.0000000 1.0000000 0.0000000 0.0000000 0.0000000 -1.0000000 0.0000000 0.0000000 0.0000000 1.0000000";
-      points = "100";
+      scale = "1 1 1";
+      dataBlock = "BananaItem";
+   };
+
+   new Item() {
+      position = "0 15 1";
+      rotation = "1 0 0 0";
+      scale = "1 1 1";
+      dataBlock = "BananaItem";
+   };
+
+   new Item() {
+      position = "0 20 1";
+      rotation = "1 0 0 0";
+      scale = "1 1 1";
+      dataBlock = "BananaItem";
+   };
+
+   // Add a goal pad to complete the level
+   new StaticShape(EndPoint) {
+      position = "0 30 0";
+      rotation = "1 0 0 0";
+      scale = "1 1 1";
+      dataBlock = "EndPad";
    };
 
 };
