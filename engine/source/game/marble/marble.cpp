@@ -156,6 +156,7 @@ Marble::Marble()
     mPhysics = MBU;
 
     mSize = 1.5f;
+    mDirectInputBlend = 1.0f; // Default to full direct input
 
     mCameraPosition = Point3F(0.0f, 0.0f, 0.0f);
 }
@@ -590,6 +591,7 @@ U32 Marble::packUpdate(NetConnection* conn, U32 mask, BitStream* stream)
     if (stream->writeFlag((mask & GravityMask) != 0))
     {
         stream->writeInt(mPhysics, 7);
+        stream->write(mDirectInputBlend);
         //stream->write(mSize);
     }
 
@@ -684,6 +686,7 @@ void Marble::unpackUpdate(NetConnection* conn, BitStream* stream)
     if (stream->readFlag())
     {
         mPhysics = stream->readInt(7);
+        stream->read(&mDirectInputBlend);
         //stream->read(&mSize);
         //updatePowerUpParams();
     }
@@ -2488,6 +2491,11 @@ ConsoleMethod(Marble, setPhysics, void, 3, 3, "(physics)")
     }
 
     object->setPhysics(physicsFlags[i]);
+}
+
+ConsoleMethod(Marble, setDirectInputBlend, void, 3, 3, "(blend)")
+{
+    object->mDirectInputBlend = dAtof(argv[2]);
 }
 
 //ConsoleMethod(Marble, setSize, void, 3, 3, "(size)")

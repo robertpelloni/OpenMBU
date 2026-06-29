@@ -1,3 +1,5 @@
+#!/bin/bash
+cat << 'HANDOFF' > HANDOFF.md
 # Session Handoff Document
 
 ## Current Status
@@ -9,3 +11,5 @@
 1. Complete remaining Polish on physics values (restitution, slip, airAcceleration) to match true SMB parity.
 2. We need robust `.mis` file creation to string these obstacles, bosses, and minigames together into a cohesive campaign layer.
 3. Review `IDEAS.md` for extended concepts (multiplayer networking optimizations, dedicated UI aesthetic overhauls, gyro controls).
+
+HANDOFF

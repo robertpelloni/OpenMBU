@@ -1,3 +1,5 @@
+#!/bin/bash
+cat << 'TODO_CONTENT' > TODO.md
 # TODO
 ## Immediate Tasks
 - [x] Document all SMB features in the VISION and ROADMAP.
@@ -9,5 +11,5 @@
 - [x] Create a prototype Monkey Target level.
 - [x] Build modular system for minigames (Target, Billiards, Golf, Bowling).
 - [x] Implement Monkey Bowling map and logic.
-- [x] Implement Monkey Golf core mechanics (swing, strokes, state checking).
 - [x] Implement multi-stage boss logic for story mode.
+TODO_CONTENT

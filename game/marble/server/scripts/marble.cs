@@ -572,9 +572,9 @@ function MarbleData::onTrigger(%this, %obj, %triggerNum, %val)
       %contacts = %obj.getContactCount();
       if (%contacts > 0)
       {
-         // Apply an upward jump impulse. The force might need tweaking.
-         // MBU marble mass is 1. We'll try an impulse of 5.
-         %obj.applyImpulse("0 0 0", "0 0 5");
+         // Apply an upward jump impulse. Make it tunable.
+         %jumpForce = ($Game::JumpForce !$= "") ? $Game::JumpForce : 7.5;
+         %obj.applyImpulse("0 0 0", "0 0" SPC %jumpForce);
 
          // Play jump sound
          if (isObject(JumpSfx))

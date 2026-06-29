@@ -233,6 +233,7 @@ private:
     Point3F mCameraPosition;
 
 public:
+    F32 mDirectInputBlend;
     DECLARE_CONOBJECT(Marble);
 
     Marble();

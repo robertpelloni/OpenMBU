@@ -6,6 +6,7 @@ new SimGroup(MissionGroup) {
       desc = "Roll down the ramp and hit the triggers in the sky!";
       type = "Custom";
       level = "1";
+      minigameType = "MonkeyTarget";
    };
 
    new MissionArea(MissionArea) {

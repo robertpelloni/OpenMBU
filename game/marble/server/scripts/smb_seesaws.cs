@@ -9,7 +9,7 @@ datablock RigidShapeData(SMBSeesaw)
 {
    category = "SMB Obstacles";
    className = "Seesaw";
-   shapeFile = "~/data/shapes/platforms/seesaw.dts";
+   shapeFile = "~/data/shapes/structures/glass_flat.dts"; // Placeholder flat shape
 
    mass = 100.0;
    massCenter = "0 0 -0.5";    // Shift mass center down to naturally self-balance

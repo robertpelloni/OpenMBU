@@ -14,7 +14,7 @@ datablock StaticShapeData(SMBSwitch)
 {
    category = "SMB Obstacles";
    className = "SMBSwitchClass";
-   shapeFile = "~/data/shapes/buttons/pushbutton.dts"; // Reuse button shape
+   shapeFile = "~/data/shapes/pads/checkpad.dts"; // Reuse checkpad shape
    scopeAlways = true;
    sound = SMBSwitchSfx;
 };
