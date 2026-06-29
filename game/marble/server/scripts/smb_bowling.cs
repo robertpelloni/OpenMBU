@@ -18,6 +18,7 @@ datablock RigidShapeData(SMBBowlingPin)
 
 function BowlingMinigame::onStart()
 {
+   MinigameTemplate::init("Monkey Bowling");
    echo("Bowling Minigame initialized!");
    $Game::BowlingState = "Aiming"; // States: Aiming, Rolling, Scoring
 }
@@ -29,7 +30,7 @@ function BowlingMinigame::onEnd()
 
 function BowlingMinigame::onPlayerJoin(%client)
 {
-   %client.score = 0;
+   %client.minigameScore = 0;
    messageClient(%client, 'MsgSystem', '\c0Welcome to Bowling! Strike it big!');
 }
 
@@ -39,6 +40,7 @@ function BowlingMinigame::onPlayerSpawn(%player)
    %player.setMode(2); // Using existing restrictive modes or we can do it via tick
    $Game::BowlingState = "Aiming";
    %player.client.currentPins = 10;
+   MinigameTemplate::updateUI(%player.client, "Aiming...", 0);
 
    spawnPins();
 }
@@ -56,6 +58,7 @@ function serverCmdBowlingThrow(%client, %power)
 
       // Schedule score calculation
       %delay = ($Game::MonkeyBowling::ScoreDelayMS !$= "") ? $Game::MonkeyBowling::ScoreDelayMS : 5000;
+      MinigameTemplate::updateUI(%client, "Rolling!", %delay / 1000);
       schedule(%delay, 0, "calculateBowlingScore", %client);
    }
 }
@@ -128,8 +131,9 @@ function calculateBowlingScore(%client)
       }
    }
 
-   %client.score += %knockedOver;
-   messageClient(%client, 'MsgSystem', '\c0You knocked over %1 pins! Total Score: %2', %knockedOver, %client.score);
+   MinigameTemplate::addScore(%client, %knockedOver);
+   MinigameTemplate::updateUI(%client, "Knocked over: " @ %knockedOver @ " pins!", 3);
+   messageClient(%client, 'MsgSystem', '\c0You knocked over %1 pins! Total Score: %2', %knockedOver, %client.minigameScore);
 
    // Reset round
    schedule(2000, 0, "serverCmdRestartLevel", %client);

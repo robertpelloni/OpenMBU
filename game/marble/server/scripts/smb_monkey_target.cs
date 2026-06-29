@@ -16,6 +16,7 @@ datablock MarbleData(GliderMarble : DefaultMarble)
 // Framework Hooks
 function MonkeyTargetMinigame::onStart()
 {
+   MinigameTemplate::init("Monkey Target");
    echo("Monkey Target Minigame initialized!");
    $Game::MonkeyTargetMode = true;
 }
@@ -28,8 +29,9 @@ function MonkeyTargetMinigame::onEnd()
 
 function MonkeyTargetMinigame::onPlayerJoin(%client)
 {
-   %client.score = 0;
+   %client.minigameScore = 0;
    messageClient(%client, 'MsgSystem', '\c0Monkey Target Mode Active! Fly to the targets.');
+   MinigameTemplate::updateUI(%client, "Fly to the targets!", 5);
 }
 
 function MonkeyTargetMinigame::onPlayerSpawn(%player)
@@ -79,24 +81,18 @@ function SMBTargetZoneTrigger::onEnterTrigger(%this, %trigger, %obj)
       // Extract points from the trigger's dynamic field (e.g. %trigger.points)
       %points = (%trigger.points !$= "") ? %trigger.points : $Game::MonkeyTarget::DefaultPoints;
 
-      // Add points
+      // Add points via Template
       %client = %obj.client;
       if (isObject(%client))
       {
-         %client.score += %points;
+         MinigameTemplate::addScore(%client, %points);
          messageClient(%client, 'MsgSystem', '\c0Monkey Target Landed! Points: %1', %points);
-         bottomPrint(%client, "Landed! Points: " @ %points @ "<br>Total Score: " @ %client.score, 3000, 2);
+         MinigameTemplate::updateUI(%client, "Landed! (+" @ %points @ ")", 3);
       }
 
       // Revert glider and end round
       %obj.isGliding = false;
       %obj.setDataBlock(DefaultMarble);
-
-      // Play a sound for scoring
-      if (isObject(pickupSfx))
-      {
-         serverPlay3D(pickupSfx, %obj.getTransform());
-      }
 
       // Optionally reset the level or marble to the start for the next attempt
       // For now, we'll just freeze them briefly and log the score.
