@@ -4,6 +4,7 @@
 
 function BilliardsMinigame::onStart()
 {
+   MinigameTemplate::init("Monkey Billiards");
    echo("Billiards Minigame initialized!");
    // Here we would setup the table bounds, physics damping, cue ball state, etc.
 }
@@ -15,7 +16,7 @@ function BilliardsMinigame::onEnd()
 
 function BilliardsMinigame::onPlayerJoin(%client)
 {
-   %client.billiardsScore = 0;
+   %client.minigameScore = 0;
    messageClient(%client, 'MsgSystem', '\c0Welcome to Billiards! Sink your opponent\'s balls.');
 }
 
@@ -27,7 +28,7 @@ function BilliardsMinigame::onPlayerSpawn(%player)
    // Enter aiming phase for cue ball
    %player.setMode(2); // Restrict movement
    %player.client.billiardsState = "Aiming";
-   bottomPrint(%player.client, "Billiards: Aiming. Score: " @ %player.client.billiardsScore, 0, 1);
+   MinigameTemplate::updateUI(%player.client, "Aiming Cue Ball", 0);
 }
 
 // Custom billiard command to strike the cue ball
@@ -43,7 +44,7 @@ function serverCmdBilliardsStrike(%client, %power)
       %client.player.setMode(1); // Normal movement
       %client.player.applyImpulse("0 0 0", "0" SPC %actualPower SPC "0"); // Forward vector
 
-      bottomPrint(%client, "Billiards: Rolling...", 0, 1);
+      MinigameTemplate::updateUI(%client, "Rolling...", 0);
 
       // Schedule check to see when it stops
       schedule(2000, 0, "checkBilliardsStop", %client);
@@ -62,7 +63,7 @@ function checkBilliardsStop(%client)
          // Ball stopped
          %client.billiardsState = "Aiming";
          %client.player.setMode(2); // Freeze again
-         bottomPrint(%client, "Billiards: Aiming. Score: " @ %client.billiardsScore, 0, 1);
+         MinigameTemplate::updateUI(%client, "Aiming Cue Ball", 0);
       }
       else
       {
@@ -97,10 +98,8 @@ function SMBBilliardsPocketTrigger::onEnterTrigger(%this, %trigger, %obj)
          %playerClient = ClientGroup.getObject(0); // Simple hack for prototype
          if (isObject(%playerClient))
          {
-            %playerClient.billiardsScore++;
-            bottomPrint(%playerClient, "Ball Pocketed! Score: " @ %playerClient.billiardsScore, 3000, 1);
-            if (isObject(pickupSfx))
-               serverPlay3D(pickupSfx, %obj.getTransform());
+            MinigameTemplate::addScore(%playerClient, 1);
+            MinigameTemplate::updateUI(%playerClient, "Target Pocketed!", 3);
          }
 
          // Remove pocketed ball
