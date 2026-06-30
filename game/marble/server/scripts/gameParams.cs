@@ -11,6 +11,10 @@ $Game::TiltBlend = 1.0; // 1.0 = full world tilt, 0.0 = full direct torque input
 
 // Party Minigame: Monkey Target
 $Game::MonkeyTarget::DefaultPoints = 100;
+
+// Party Minigame: Monkey Billiards
+$Game::Billiards::ShotPowerMult = 20;
+$Game::Billiards::PocketScore = 10;
 $Game::MonkeyTarget::ResetDelayMS = 2000;
 $Game::MonkeyTarget::GliderGravity = 5;
 $Game::MonkeyTarget::GliderAirAccel = 25.0;
@@ -23,3 +27,10 @@ $Game::MonkeyBowling::StrikePowerMult = 50;
 // Party Minigame: Monkey Golf
 $Game::MonkeyGolf::MaxPower = 100;
 $Game::MonkeyGolf::PowerMult = 25;
+
+// Party Minigame: Monkey Fight
+$Game::MonkeyFight::PunchForce = 50;
+$Game::MonkeyFight::PunchRadius = 10;
+
+// Party Minigame: Monkey Race
+$Game::MonkeyRace::LapsToWin = 3;
