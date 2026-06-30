@@ -26,8 +26,3 @@ $Game::MonkeyGolf::PowerMult = 25;
 
 // Party Minigame: Monkey Billiards
 $Game::MonkeyBilliards::CuePowerMult = 40;
-
-// Collectables
-$Game::Collectables::BananaValue = 1;
-$Game::Collectables::BananaScore = 10;
-$Game::Collectables::ExtraLifeThreshold = 100;

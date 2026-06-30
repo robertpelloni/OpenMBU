@@ -2496,6 +2496,7 @@ ConsoleMethod(Marble, setPhysics, void, 3, 3, "(physics)")
 ConsoleMethod(Marble, setDirectInputBlend, void, 3, 3, "(blend)")
 {
     object->mDirectInputBlend = dAtof(argv[2]);
+    object->setMaskBits(Marble::GravityMask);
 }
 
 //ConsoleMethod(Marble, setSize, void, 3, 3, "(size)")
