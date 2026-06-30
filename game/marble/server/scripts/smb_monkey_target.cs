@@ -112,9 +112,11 @@ datablock TriggerData(SMBWindTunnelTrigger)
 
 function SMBWindTunnelTrigger::onEnterTrigger(%this, %trigger, %obj)
 {
-   if (%obj.getClassName() $= "Marble" && %obj.isGliding)
+   if (%obj.getClassName() $= "Marble")
    {
-      // Optional enter sound
+      // We no longer strictly limit this to isGliding so it can be used
+      // globally across other minigames (e.g. Golf, Billiards).
+      // However, we can make the force much stronger for gliders.
    }
 }
 
@@ -123,10 +125,20 @@ function SMBWindTunnelTrigger::onTickTrigger(%this, %trigger)
    for (%i = 0; %i < %trigger.getNumObjects(); %i++)
    {
       %obj = %trigger.getObject(%i);
-      if (%obj.getClassName() $= "Marble" && %obj.isGliding)
+      if (%obj.getClassName() $= "Marble")
       {
          // Get the force vector from the trigger's dynamic field, default to strong updraft
          %force = (%trigger.windForce !$= "") ? %trigger.windForce : "0 0 15";
+
+         // If it's not gliding, dampen the effect slightly so standard marbles don't fly to space
+         if (!%obj.isGliding)
+         {
+            %forceX = getWord(%force, 0) * 0.25;
+            %forceY = getWord(%force, 1) * 0.25;
+            %forceZ = getWord(%force, 2) * 0.25;
+            %force = %forceX SPC %forceY SPC %forceZ;
+         }
+
          %obj.applyImpulse("0 0 0", %force);
       }
    }
