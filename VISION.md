@@ -12,5 +12,5 @@ To transform OpenMBU into the ultimate marble/ball-rolling game ever created by 
 
 ## User-Satisfaction Design
 - Absolute precision controls.
-- Vivid, colorful, clearly readable UI.
+- Vivid, colorful, clearly readable UI. The Party Game Framework specifically leverages `bottomPrint` hooks via `MinigameTemplate::updateUI` to ensure standardized, highly visible score tracking and state feedback (e.g. "Aiming" vs "Rolling") without cluttering the center crosshair.
 - Rewarding visual/audio feedback for every collectable and goal hit.

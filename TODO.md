@@ -10,4 +10,5 @@
 - [x] Build modular system for minigames (Target, Billiards, Golf, Bowling).
 - [x] Implement Monkey Bowling map and logic.
 - [x] Implement Monkey Golf core mechanics (swing, strokes, state checking).
+- [x] Implement Monkey Billiards core mechanics (cue ball strike, scoring, scratch).
 - [x] Implement multi-stage boss logic for story mode.

@@ -590,4 +590,7 @@ function PlayGui::setBananaCount(%this, %count)
 
    BananasFoundTen.setNumber(%ten);
    BananasFoundOne.setNumber(%one);
+
+   // Make sure the entire box is visible if we have any bananas (or start at 0)
+   BananaBox.setVisible(true);
 }
