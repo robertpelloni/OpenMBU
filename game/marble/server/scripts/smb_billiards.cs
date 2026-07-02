@@ -4,106 +4,102 @@
 
 function BilliardsMinigame::onStart()
 {
-   MinigameTemplate::init("Monkey Billiards");
    echo("Billiards Minigame initialized!");
-   // Here we would setup the table bounds, physics damping, cue ball state, etc.
+   $Game::BilliardsActive = true;
 }
 
 function BilliardsMinigame::onEnd()
 {
    echo("Billiards Minigame shutting down!");
+   $Game::BilliardsActive = false;
 }
 
 function BilliardsMinigame::onPlayerJoin(%client)
 {
-   %client.minigameScore = 0;
-   messageClient(%client, 'MsgSystem', '\c0Welcome to Billiards! Sink your opponent\'s balls.');
+   %client.billiardsScore = 0;
+   messageClient(%client, 'MsgSystem', '\c0Welcome to Monkey Billiards! Sink the balls to score points.');
 }
 
 function BilliardsMinigame::onPlayerSpawn(%player)
 {
-   // Snap camera to top-down orthographic if possible, or lock to cue ball
-   // Set physics to a custom flat-plane high-restitution style if needed
-
-   // Enter aiming phase for cue ball
-   %player.setMode(2); // Restrict movement
-   %player.client.billiardsState = "Aiming";
-   MinigameTemplate::updateUI(%player.client, "Aiming Cue Ball", 0);
+   %player.setMode(2); // Freeze mode for aiming
 }
 
-// Custom billiard command to strike the cue ball
-function serverCmdBilliardsStrike(%client, %power)
+function serverCmdBilliardsShot(%client, %power)
 {
-   if (%client.billiardsState $= "Aiming" && isObject(%client.player))
+   if ($Game::BilliardsActive && isObject(%client.player))
    {
-      %client.billiardsState = "Rolling";
-
-      %powerMult = ($Game::MonkeyBilliards::CuePowerMult !$= "") ? $Game::MonkeyBilliards::CuePowerMult : 40;
+      %powerMult = ($Game::Billiards::ShotPowerMult !$= "") ? $Game::Billiards::ShotPowerMult : 20;
       %actualPower = %power * %powerMult;
 
+      // Calculate forward trajectory based on the player's camera/marble transform
+      %transform = %client.player.getTransform();
+      %forwardVec = %client.player.getForwardVector();
+      %impulseVec = VectorScale(%forwardVec, %actualPower);
+
       %client.player.setMode(1); // Normal movement
-      %client.player.applyImpulse("0 0 0", "0" SPC %actualPower SPC "0"); // Forward vector
+      %client.player.applyImpulse("0 0 0", %impulseVec);
 
-      MinigameTemplate::updateUI(%client, "Rolling...", 0);
-
-      // Schedule check to see when it stops
-      schedule(2000, 0, "checkBilliardsStop", %client);
+      messageClient(%client, 'MsgSystem', '\c0Shot fired! Power: %1', %power);
    }
 }
 
-function checkBilliardsStop(%client)
-{
-   if (isObject(%client.player))
-   {
-      %vel = %client.player.getVelocity();
-      %speed = VectorLen(%vel);
-
-      if (%speed < 0.1)
-      {
-         // Ball stopped
-         %client.billiardsState = "Aiming";
-         %client.player.setMode(2); // Freeze again
-         MinigameTemplate::updateUI(%client, "Aiming Cue Ball", 0);
-      }
-      else
-      {
-         schedule(500, 0, "checkBilliardsStop", %client);
-      }
-   }
-}
-
-// Trigger logic for Pockets
-datablock TriggerData(SMBBilliardsPocketTrigger)
+datablock TriggerData(BilliardsPocketTrigger)
 {
    tickPeriodMS = 100;
 };
 
-function SMBBilliardsPocketTrigger::onEnterTrigger(%this, %trigger, %obj)
+function BilliardsPocketTrigger::onEnterTrigger(%this, %trigger, %obj)
 {
-   if (%obj.getClassName() $= "Marble")
+   if ($Game::BilliardsActive)
    {
-      %client = %obj.client;
-      if (isObject(%client))
+      %scoreVal = ($Game::Billiards::PocketScore !$= "") ? $Game::Billiards::PocketScore : 10;
+
+      if (%obj.getClassName() $= "RigidShape")
       {
-         // If it's the cue ball, it's a scratch!
-         messageClient(%client, 'MsgSystem', '\c0Scratch! Cue ball pocketed.');
-         %obj.setMode(0); // Freeze mode
-         schedule(1000, 0, "serverCmdRestartLevel", %client);
-      }
-      else
-      {
-         // It's a target ball, score it
-         // Find the client who hit it last, or just award point to current turn if multiplayer
-         // For now, if we have a simple single-player prototype:
-         %playerClient = ClientGroup.getObject(0); // Simple hack for prototype
-         if (isObject(%playerClient))
+         // Target ball sunk
+         %obj.delete();
+
+         // Give points to the last player who struck the cue ball (assuming single player for simplicity)
+         // In multiplayer, you'd track this via collision, but we will award the local client or the host.
+         if (ClientGroup.getCount() > 0)
          {
-            MinigameTemplate::addScore(%playerClient, 1);
-            MinigameTemplate::updateUI(%playerClient, "Target Pocketed!", 3);
+            %client = ClientGroup.getObject(0); // Primary client
+            %client.billiardsScore += %scoreVal;
+            messageClient(%client, 'MsgSystem', '\c0Ball Sunk! Score: %1', %client.billiardsScore);
+            bottomPrint(%client, "<color:00ff00><font:Arial Bold:24>Score: " @ %client.billiardsScore, 3, 2);
          }
 
-         // Remove pocketed ball
-         %obj.delete();
+         if (isObject(pickupSfx))
+            serverPlay3D(pickupSfx, %trigger.getTransform());
+      }
+      else if (%obj.getClassName() $= "Marble")
+      {
+         // Cue ball (player) sunk - scratch
+         %client = %obj.client;
+         if (isObject(%client))
+         {
+            %client.billiardsScore -= %scoreVal;
+            messageClient(%client, 'MsgSystem', '\c0Scratch! Cue ball sunk. Score: %1', %client.billiardsScore);
+            bottomPrint(%client, "<color:ff0000><font:Arial Bold:24>Scratch! Score: " @ %client.billiardsScore, 3, 2);
+         }
+
+         // Reset cue ball safely back to their last checkpoint/spawn rather than a hardcoded coordinate
+         if (isObject(%client))
+         {
+            // The client object usually has a drop point or respawn logic in MBU
+            %client.respawnPlayer();
+         }
+         else
+         {
+            %obj.setVelocity("0 0 0");
+            %obj.setTransform("0 0 5"); // Fallback
+         }
+
+         %obj.setMode(2); // Freeze again for aiming
+
+         if (isObject(DestroyedVoiceSfx))
+            serverPlay3D(DestroyedVoiceSfx, %trigger.getTransform());
       }
    }
 }
