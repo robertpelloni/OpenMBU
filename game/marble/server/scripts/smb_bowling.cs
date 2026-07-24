@@ -8,9 +8,9 @@ datablock RigidShapeData(SMBBowlingPin)
    className = "BowlingPin";
    shapeFile = "~/data/shapes/items/gem.dts"; // Placeholder shape
 
-   mass = 1.5;
-   friction = 0.2;
-   restitution = 0.5;
+   mass = ($Game::MonkeyBowling::PinMass !$= "") ? $Game::MonkeyBowling::PinMass : 1.5;
+   friction = ($Game::MonkeyBowling::PinFriction !$= "") ? $Game::MonkeyBowling::PinFriction : 0.2;
+   restitution = ($Game::MonkeyBowling::PinRestitution !$= "") ? $Game::MonkeyBowling::PinRestitution : 0.5;
 
    // A bowling pin should have a higher center of mass to easily tip
    massCenter = "0 0 0.5";
@@ -20,17 +20,18 @@ function BowlingMinigame::onStart()
 {
    echo("Bowling Minigame initialized!");
    $Game::BowlingState = "Aiming"; // States: Aiming, Rolling, Scoring
+   $Game::MonkeyBowlingActive = true;
 }
 
 function BowlingMinigame::onEnd()
 {
    echo("Bowling Minigame shutting down!");
+   $Game::MonkeyBowlingActive = false;
 }
 
 function BowlingMinigame::onPlayerJoin(%client)
 {
-   %client.score = 0;
-   messageClient(%client, 'MsgSystem', '\c0Welcome to Bowling! Strike it big!');
+   PartyGame::initClientScore(%client, '\c0Welcome to Bowling! Strike it big!');
 }
 
 function BowlingMinigame::onPlayerSpawn(%player)
@@ -52,7 +53,10 @@ function serverCmdBowlingThrow(%client, %power)
       // Apply massive forward impulse to emulate throw
       %client.player.setMode(1); // Normal movement
       %powerMult = ($Game::MonkeyBowling::StrikePowerMult !$= "") ? $Game::MonkeyBowling::StrikePowerMult : 50;
-      %client.player.applyImpulse("0 0 0", "0" SPC (%power * %powerMult) SPC "0");
+
+      %forwardVec = %client.player.getForwardVector();
+      %impulseVec = VectorScale(%forwardVec, %power * %powerMult);
+      %client.player.applyImpulse("0 0 0", %impulseVec);
 
       // Schedule score calculation
       %delay = ($Game::MonkeyBowling::ScoreDelayMS !$= "") ? $Game::MonkeyBowling::ScoreDelayMS : 5000;
@@ -130,6 +134,7 @@ function calculateBowlingScore(%client)
 
    %client.score += %knockedOver;
    messageClient(%client, 'MsgSystem', '\c0You knocked over %1 pins! Total Score: %2', %knockedOver, %client.score);
+   PartyGame::endGameUI(%client, "<color:00ff00><font:Arial Bold:24>Total Score: " @ %client.score);
 
    // Reset round
    schedule(2000, 0, "serverCmdRestartLevel", %client);

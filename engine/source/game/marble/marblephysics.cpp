@@ -42,6 +42,11 @@ void Marble::setVelocityD(const Point3D& vel)
     setMaskBits(MoveMask);
 }
 
+Point3D Marble::getOmegaD() const
+{
+    return mOmega;
+}
+
 void Marble::setVelocityRotD(const Point3D& rot)
 {
     dMemcpy(mOmega, rot, sizeof(mOmega));

@@ -323,6 +323,7 @@ public:
 
     // Marble Physics
     Point3D getVelocityD() const;
+    Point3D getOmegaD() const;
     void setVelocityD(const Point3D& vel);
     void setVelocityRotD(const Point3D& rot);
     virtual void applyImpulse(const Point3F& pos, const Point3F& vec);

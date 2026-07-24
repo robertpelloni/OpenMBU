@@ -2418,6 +2418,25 @@ ConsoleMethod(Marble, setGravityDir, void, 3, 4, "(gravity, snap)")
     QuatF grav(mat2);
     grav.normalize();
 
+    if (!snap)
+    {
+        MatrixF invMat(mat1);
+        invMat.inverse();
+
+        MatrixF delta;
+        delta.mul(mat2, invMat);
+
+        Point3F velF = object->getVelocityD();
+        Point3D omegaD = object->getOmegaD();
+        Point3F omegaF(omegaD.x, omegaD.y, omegaD.z);
+
+        delta.mulP(velF);
+        delta.mulV(omegaF);
+
+        object->setVelocityD(Point3D(velF.x, velF.y, velF.z));
+        object->setVelocityRotD(Point3D(omegaF.x, omegaF.y, omegaF.z));
+    }
+
     object->setGravityFrame(grav, snap);
 }
 

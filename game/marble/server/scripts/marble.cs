@@ -548,7 +548,7 @@ function MarbleData::onAdd(%this, %obj)
 function MarbleData::onTrigger(%this, %obj, %triggerNum, %val)
 {
    // Monkey Target Glider Toggle (triggerNum 1)
-   if ($Game::MonkeyTargetMode && %triggerNum == 1 && %val)
+   if ($Game::MonkeyTargetActive && %triggerNum == 1 && %val)
    {
       %obj.isGliding = !%obj.isGliding;
       if (%obj.isGliding)
