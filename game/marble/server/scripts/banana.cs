@@ -39,13 +39,17 @@ function BananaItem::onPickup(%this, %obj, %user, %amount)
       // Inform client
       messageClient(%user.client, 'MsgItemPickup', '\c0You picked up %1', %this.pickupName);
 
-      // Increment bananas
+      // Increment bananas and score
       %user.client.bananas++;
 
-      // Every 100 bananas is an extra life (SMB standard)
-      if (%user.client.bananas >= 100)
+      %scoreVal = ($Game::Collectables::BananaScoreValue !$= "") ? $Game::Collectables::BananaScoreValue : 10;
+      %user.client.score += %scoreVal;
+
+      // Extra life threshold check
+      %threshold = ($Game::Collectables::BananaLifeThreshold !$= "") ? $Game::Collectables::BananaLifeThreshold : 100;
+      if (%user.client.bananas >= %threshold)
       {
-         %user.client.bananas -= 100;
+         %user.client.bananas -= %threshold;
          %user.client.lives++;
          messageClient(%user.client, 'MsgExtraLife', '\c0Extra Life!');
          // Play extra life sound here

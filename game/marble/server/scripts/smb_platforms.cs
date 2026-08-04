@@ -2,9 +2,6 @@
 // Super Monkey Ball Elevators and Moving Platforms
 //-----------------------------------------------------------------------------
 
-// We reuse PathedInterior for moving platforms, but we can set up custom datablocks
-// for different sound profiles and behaviors (e.g., continuous looping vs switch-activated)
-
 datablock SFXProfile(SMBPlatformLoopSfx)
 {
    filename = "~/data/sound/custom/platform_loop.wav";
@@ -24,4 +21,20 @@ datablock PathedInteriorData(SMBElevator)
 
 // Platforms in SMB often move constantly, which is handled natively by placing a
 // PathedInterior in the mission editor and setting its target to -2.
-// No extra code is explicitly needed here, but the datablocks organize them.
+// We can wrap this in a dynamic helper for programmatic generation.
+
+function createPlatform(%position, %pathIndex, %isElevator)
+{
+   %block = %isElevator ? "SMBElevator" : "SMBMovingPlatform";
+
+   %plat = new PathedInterior()
+   {
+      dataBlock = %block;
+      position = %position;
+      interiorResource = "placeholder.dif"; // Must map to an actual .dif or .dts internally in editor
+      pathIndex = %pathIndex;
+   };
+
+   MissionGroup.add(%plat);
+   return %plat;
+}

@@ -5,7 +5,7 @@ To transform OpenMBU into the ultimate marble/ball-rolling game ever created by 
 ## Foundational Concepts
 - **World Tilting Physics vs Ball Rolling:** SMB uses world-tilting to move the ball, MBU uses direct torque. We will blend these into an ultimate hybrid scheme or allow toggling.
 - **Fruit Collection:** Bananas (or custom fruit) that grant extra lives, score multipliers, and affect time.
-- **Dynamic Obstacles:** Bumpers, conveyors, seesaws, folding platforms, and physics-driven rigidbodies.
+- **Dynamic Obstacles:** Bumpers, conveyors, seesaws, folding platforms, and physics-driven rigidbodies. The dynamic spawning hook system (`createBumper`, `createSeesaw`, etc.) in `smb_obstacles.cs` standardizes map generation and configuration values pull from `gameParams.cs`.
 - **Boss Fights:** Giant mechanical obstacles and bosses at the end of worlds.
 - **Minigames:** Bowling, Target, Billiards, Golf, Fight, Race, etc.
 - **Jump Mechanic:** Native jump support as introduced in Banana Blitz, balanced with classic level design.

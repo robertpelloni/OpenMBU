@@ -2,9 +2,6 @@
 // Super Monkey Ball: Monkey Target Prototype
 //-----------------------------------------------------------------------------
 
-// Monkey Target Configuration Variables
-// Values are now defined in gameParams.cs
-
 // Glider datablock config
 datablock MarbleData(GliderMarble : DefaultMarble)
 {
@@ -16,22 +13,19 @@ datablock MarbleData(GliderMarble : DefaultMarble)
 // Framework Hooks
 function MonkeyTargetMinigame::onStart()
 {
-   MinigameTemplate::init("Monkey Target");
    echo("Monkey Target Minigame initialized!");
-   $Game::MonkeyTargetMode = true;
+   $Game::MonkeyTargetActive = true;
 }
 
 function MonkeyTargetMinigame::onEnd()
 {
    echo("Monkey Target Minigame shutting down!");
-   $Game::MonkeyTargetMode = false;
+   $Game::MonkeyTargetActive = false;
 }
 
 function MonkeyTargetMinigame::onPlayerJoin(%client)
 {
-   %client.minigameScore = 0;
-   messageClient(%client, 'MsgSystem', '\c0Monkey Target Mode Active! Fly to the targets.');
-   MinigameTemplate::updateUI(%client, "Fly to the targets!", 5);
+   PartyGame::initClientScore(%client, '\c0Monkey Target Mode Active! Fly to the targets.');
 }
 
 function MonkeyTargetMinigame::onPlayerSpawn(%player)
@@ -42,8 +36,8 @@ function MonkeyTargetMinigame::onPlayerSpawn(%player)
 
 function serverCmdToggleMonkeyTarget(%client)
 {
-   $Game::MonkeyTargetMode = !$Game::MonkeyTargetMode;
-   if ($Game::MonkeyTargetMode)
+   $Game::MonkeyTargetActive = !$Game::MonkeyTargetActive;
+   if ($Game::MonkeyTargetActive)
    {
       messageClient(%client, 'MsgSystem', '\c0Monkey Target Mode: ENABLED');
       if (isObject(%client.player))
@@ -60,13 +54,6 @@ function serverCmdToggleMonkeyTarget(%client)
    }
 }
 
-// Monkey Target uses TriggerNum 1 (altTrigger / blast usually) to toggle wings
-// We hook into MarbleData::onTrigger which we already modified for jumping (TriggerNum 2).
-// Since MarbleData::onTrigger in MBU is used for powerups (trigger 0 typically) and blast,
-// we can intercept it if MonkeyTargetMode is active.
-
-// We will overwrite the main onTrigger locally or add a hook.
-
 // Target Zones for Monkey Target
 datablock TriggerData(SMBTargetZoneTrigger)
 {
@@ -76,28 +63,35 @@ datablock TriggerData(SMBTargetZoneTrigger)
 // Each zone provides points and ends the flight attempt
 function SMBTargetZoneTrigger::onEnterTrigger(%this, %trigger, %obj)
 {
-   if (%obj.getClassName() $= "Marble" && $Game::MonkeyTargetMode)
+   if (%obj.getClassName() $= "Marble" && $Game::MonkeyTargetActive)
    {
       // Extract points from the trigger's dynamic field (e.g. %trigger.points)
       %points = (%trigger.points !$= "") ? %trigger.points : $Game::MonkeyTarget::DefaultPoints;
 
-      // Add points via Template
+      // Add points
       %client = %obj.client;
       if (isObject(%client))
       {
-         MinigameTemplate::addScore(%client, %points);
-         messageClient(%client, 'MsgSystem', '\c0Monkey Target Landed! Points: %1', %points);
-         MinigameTemplate::updateUI(%client, "Landed! (+" @ %points @ ")", 3);
+         %client.score += %points;
+         PartyGame::endGameUI(%client, "<color:00ff00><font:Arial Bold:24>Landed! Points: " @ %points @ "<br>Total Score: " @ %client.score);
       }
 
       // Revert glider and end round
       %obj.isGliding = false;
       %obj.setDataBlock(DefaultMarble);
 
-      // Optionally reset the level or marble to the start for the next attempt
-      // For now, we'll just freeze them briefly and log the score.
-      %obj.setMode(0); // Freeze mode
-      schedule($Game::MonkeyTarget::ResetDelayMS, 0, "serverCmdRestartLevel", %client);
+      // Play a sound for scoring
+      if (isObject(pickupSfx))
+      {
+         serverPlay3D(pickupSfx, %obj.getTransform());
+      }
+
+      // Freeze mode
+      %obj.setMode(0);
+
+      // Delay restart
+      %delay = ($Game::MonkeyTarget::ResetDelayMS !$= "") ? $Game::MonkeyTarget::ResetDelayMS : 2000;
+      schedule(%delay, 0, "serverCmdRestartLevel", %client);
    }
 }
 
@@ -112,11 +106,9 @@ datablock TriggerData(SMBWindTunnelTrigger)
 
 function SMBWindTunnelTrigger::onEnterTrigger(%this, %trigger, %obj)
 {
-   if (%obj.getClassName() $= "Marble")
+   if (%obj.getClassName() $= "Marble" && %obj.isGliding)
    {
-      // We no longer strictly limit this to isGliding so it can be used
-      // globally across other minigames (e.g. Golf, Billiards).
-      // However, we can make the force much stronger for gliders.
+      // Optional enter sound
    }
 }
 
@@ -125,20 +117,10 @@ function SMBWindTunnelTrigger::onTickTrigger(%this, %trigger)
    for (%i = 0; %i < %trigger.getNumObjects(); %i++)
    {
       %obj = %trigger.getObject(%i);
-      if (%obj.getClassName() $= "Marble")
+      if (%obj.getClassName() $= "Marble" && %obj.isGliding)
       {
          // Get the force vector from the trigger's dynamic field, default to strong updraft
          %force = (%trigger.windForce !$= "") ? %trigger.windForce : "0 0 15";
-
-         // If it's not gliding, dampen the effect slightly so standard marbles don't fly to space
-         if (!%obj.isGliding)
-         {
-            %forceX = getWord(%force, 0) * 0.25;
-            %forceY = getWord(%force, 1) * 0.25;
-            %forceZ = getWord(%force, 2) * 0.25;
-            %force = %forceX SPC %forceY SPC %forceZ;
-         }
-
          %obj.applyImpulse("0 0 0", %force);
       }
    }

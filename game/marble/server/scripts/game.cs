@@ -1021,6 +1021,10 @@ function GameConnection::onClientEnterGame(%this)
    if ($Game::packetLoss || $Game::packetLag)
       %this.setSimulatedNetParams($Game::packetLoss,$Game::packetLag/2);
 
+   // Initialize global collectables/lives
+   %this.lives = ($Game::Collectables::StartingLives !$= "") ? $Game::Collectables::StartingLives : 3;
+   %this.bananas = 0;
+
    PartyFramework::onPlayerJoin(%this);
 }
 
@@ -2475,7 +2479,9 @@ exec("./smb_monkey_target.cs");
 exec("./smb_billiards.cs");
 exec("./smb_golf.cs");
 exec("./smb_bowling.cs");
+exec("./party_game_base.cs");
 exec("./party_framework.cs");
 exec("./minigame_template.cs");
 exec("./boss_framework.cs");
 exec("./smb_boss_ape.cs");
+exec("./smb_obstacles.cs");
